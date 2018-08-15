@@ -158,15 +158,16 @@ function pop_new_book( event ) {
 
 function getDownloadLink( arr, target ) {
     
+	let link = "https://100millionbooks.org";
     const file_type = ( target === 'darwin' ) ? 'application/x-apple-diskimage' : 'application/x-ms-dos-executable';
     
     arr.forEach(function(e) {
-        if( e.content_type === 'file_type' ) {
-            return e.browser_download_url;
+        if( e.content_type === file_type ) {
+            link = e.browser_download_url;
         }
     });
 
-    return "https://100millionbooks.org";
+    return link;
 }
 
 function set_defaults() {
