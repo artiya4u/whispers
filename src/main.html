@@ -225,6 +225,26 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		
+		<div class="modal fade" id="update-available" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Update Released!</h4>
+					</div>
+					<div class="modal-body">
+                        <div style='text-align: center;'>
+                            <img src="../img/new-update.jpg">
+                        </div>
+						<p class='modal-box-header'>Please update before proceeding. It won't take more than 30 seconds!</p>
+                        <p id='update-details'>What's new: no details provided for this update, but it's probably great stuff!</p>
+					</div>
+					<div class="modal-footer">
+						<a class='btn btn-primary' href='https://100millionbooks.org' target='_blank' data-dismiss="modal"><i class="fa fa-download" aria-hidden="true"></i> Get it now</a>
+					</div>
+				</div>
+			</div>
 	    </div>
         
         
@@ -368,7 +388,13 @@
                 $( '#social-box' ).modal( 'show' );
                     break;
             }
-        });
+		});
+		
+		ipcRenderer.on( 'new-update-available', ( event, data ) => {
+			$( '#update-details' ).text( data.update_details );
+			$( '#update-available .modal-footer a' ).attr( 'href', data.download_link ) ;
+			$( '#update-available' ).modal( { backdrop: 'static', keyboard: false } );
+		});
         
         /*****************
         window functions

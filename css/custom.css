@@ -781,6 +781,11 @@ input[type=range]::-webkit-slider-runnable-track {
     margin: 40px auto 25px auto;
 }
 
+#update-available p.modal-box-header {
+    font-size: 16px;
+    font-weight: 700;
+}
+
 #stay-in-touch .modal-footer button.send-email {
 	margin-left: 10px;
 }
@@ -815,13 +820,20 @@ input[type=range]::-webkit-slider-runnable-track {
     padding-bottom: 10px;
 }
 
-#oc-box img, #rediscovery-box img, #social-box img {
+#oc-box img, #rediscovery-box img, #social-box img, #update-available img {
     width: 65%;
     padding: 40px;
     padding-top: 25px;
     padding-bottom: 0;
 }
 
+#update-available img {
+    width: 40%;
+}
+
+#update-available .modal-body {
+    text-align: center;
+}
 
 #stay-in-touch input[type='email'] {
 	width: 100%;

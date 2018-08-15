@@ -123,23 +123,50 @@ function pop_new_book( event ) {
     });
     
     //check for software updates
-    /* request( "https://api.github.com/repos/bisq-network/bisq-desktop/releases/latest", { json: true, headers: { 'User-Agent': '100 Million Books for Desktop' } }, ( err, res, body ) => {
+    request( "https://api.github.com/repos/100millionbooks/whispers/releases/latest", { json: true, headers: { 'User-Agent': 'Whispers' } }, ( err, res, body ) => {
         if( err ) { 
             console.log( "Error in checking for updates." );
-            
             return;
         } else {
-            //body = body.replace(/'/g, '"');
-            //console.log( body );
+
             if( ( typeof body === 'object' ) && body.hasOwnProperty( 'tag_name' ) ) {
-                console.log( body['tag_name'] );
-            } else {
-                //error...can't do update
+                let newestv = body['tag_name'];
+                let currentv = 'v' + app.getVersion();
+                
+                if( newestv !== currentv ) {
+                    let link = "";
+                    switch( process.platform ) {
+                        case 'darwin':
+                            link = getDownloadLink( body['assets'], 'darwin' );
+                            break;
+                        case 'win32':
+                            link = getDownloadLink( body['assets'], 'win32' );
+                            break;
+                        default:
+                            link = "https://github.com/100millionbooks/whispers/releases/latest";
+                            break;
+                    }
+                    
+                    mainWindow.webContents.send( 'new-update-available', { download_link: link, update_details: body['body'] } );
+                }
             }
         }
-    }); */
+    });
 	
 	return;
+}
+
+function getDownloadLink( arr, target ) {
+    
+    const file_type = ( target === 'darwin' ) ? 'application/x-apple-diskimage' : 'application/x-ms-dos-executable';
+    
+    arr.forEach(function(e) {
+        if( e.content_type === 'file_type' ) {
+            return e.browser_download_url;
+        }
+    });
+
+    return "https://100millionbooks.org";
 }
 
 function set_defaults() {
@@ -229,7 +256,6 @@ function load_books( send_back, event, first_run, cid ) {
                 });
             } catch(e) {
                 //don't do anything
-                console.log( "FAILED. COME AT ME BRO." );
             }
         }
     });
