@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Whispers (Beta) by 100 Million Books</title>
+
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" href="../css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="../css/custom.css">
+        <link rel="stylesheet" href="../css/bootstrap-toggle.min.css">
+
+        <!-- Javascript -->
+        <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+        
+        <script src="../js/jquery.min.js" charset="utf-8"></script>
+        <script src="../js/bootstrap.min.js" charset="utf-8"></script>
+        <script src="../js/bootstrap-toggle.min.js"></script>
+        
+        <script>if (window.module) module = window.module;</script>
+        
+    </head>
+    <body>
+    
+        <div id="loading-screen">
+            <div style="margin-top: 16vh;text-align: center;">
+                <!--<i class="fas fa-cog fa-spin fa-3x"></i>-->
+                <img src="../img/icon.png">
+                <!--<h3><i class="fas fa-asterisk fa-spin"></i> Loading...<i class="fas fa-asterisk fa-spin"></i></h3>-->
+                <h3>Whispers (Beta)</h3>
+                <p>by 100 Million Books</p>
+            </div>
+        </div>
+		
+		<div id="book-loading-screen">
+			<div id='swipe-loading' class=''>
+				<div class="spinner">
+				  <div class="double-bounce1"></div>
+				  <div class="double-bounce2"></div>
+				</div>
+				<div id="failed-come-again">
+					<img src="../img/failed-come-again.png">
+					<p>Failed to load books.</p>
+					<button class='btn btn-default'><i class="fas fa-redo"></i> Try Again</button>
+				</div>
+			</div>
+        
+			<div id='info-loading' class=''>
+				<div id='book-basics-loading'>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="about-project" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">About Whispers</h4>
+					</div>
+					<div class="modal-body">
+						<img src="../img/whisper_icon.png">
+						<p class='modal-box-header'>Humans have published over 100,000,000 books but most of us never discover 99.9999% of them.</p>
+						<p>That's generations of knowledge & wisdom—lost. Whispers helps you rediscover this massive store of wisdom.</p>
+						<p>Every few minutes, you'll get a small notification about a new book. It'll be quick and subtle—so you will probably miss it (that's by design...we don't want to distract you!)—but if you happen to catch one you like, hop to this window for a hand-picked snippet from the book.</p>
+						<p>This program is part of the <a href='https://100millionbooks.org/' target='_blank'>100 Million Books</a> project. Check out our <a href='https://100millionbooks.org/transparency/' target='_blank'>Transparency Report</a> to see more about the books we feature. You can read more about our mission <a href='https://medium.com/@100millionbooks/why-332a1c325299'>here</a>.</p>
+						<p class='note'>v0.5.0<br>Please note that this software is in beta. It may not be very stable, and it's missing some features.</p>
+					</div>
+					<div class="modal-footer">
+						<button class='btn btn-primary'>One More Thing <i class="fas fa-angle-right"></i></button>
+					</div>
+				</div>
+			</div>
+	    </div>
+		
+		<div class="modal fade" id="stay-in-touch" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Let's Stay In Touch</h4>
+					</div>
+					<div class="modal-body">
+						<img src="../img/icon.png">
+						<p>100 Million Books (which maintains Whispers) is the most ambitious effort to make books <b>discoverable</b> through serendipity.</p>
+						<p>Subscribe for updates & to be among the first to know about new editions of our digital magazine <a href='https://100millionbooks.org/occasional-curiosity' target='_blank'><i>The Occasional Curiosity</i></a>!</p>
+						<p>We don't email more than twice a month.</p>
+						<input type='email' placeholder='your email'>
+						<!--<p>We publish a digital magazine called <a href='https://100millionbooks.org/occasional-curiosity' target='_blank'><i>The Occasional Curiosity</i></a> with the best snippets we find that we couldn't put here. It goes out twice a month...sign up to stay updated!</p>
+						<p>No good digital service can be 100% free forever (unless it steals & sells your data). While a basic version of this service will always be free, we may charge for features you want. Subscribers will always get first dibs & the best deals!</p>-->
+					</div>
+					<div class="modal-footer">
+						<button class='btn btn-default no-thanks'>No Thanks</button><button class='btn btn-primary send-email'>Submit <i class="fas fa-angle-right"></i></button>
+						<i class="fa fa-cog fa-spin fa-fw get-email-status loading"></i> <i class="fa fa-check get-email-status success" aria-hidden="true"></i> <i class="fa fa-times get-email-status fail" aria-hidden="true"></i>
+					</div>
+				</div>
+			</div>
+	    </div>
+        
+        <div class="modal fade" id="app-settings" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Settings</h4>
+					</div>
+					<div class="modal-body">
+                        
+                        <div id='setting-whisper-interval' class='setting'>
+                            <p>How often do you want to get Whispers?</p>
+                            
+                            <div class='setting-readout'>every <span>20</span> minutes</div>
+                            
+                            <input type="range" min="5" max="100" step="5" value="20">
+                            
+                        </div>
+                        
+                        <div id='setting-whisper-duration' class='setting'>
+                            <p>How long should Whisper notifications show?</p>
+                            
+                            <div class='setting-readout'>for <span>1200</span> milliseconds</div>
+                            
+                            <input type="range" min="1000" max="3000" step="100" value="1200">
+                            
+                        </div>
+                        
+                        <div id='setting-autostart' class='setting'>
+                            <p>Would you like Whispers to start when you log in?</p>
+                            
+                            <input type="checkbox" checked=true data-toggle="toggle" data-on="Yes" data-off="No" data-width="80">
+                            
+                        </div>
+                        
+					</div>
+					<div class="modal-footer">
+						<button class='btn btn-default settings-done'>Done</button>
+					</div>
+				</div>
+			</div>
+	    </div>
+        
+        <div class="modal fade" id="privacy-box" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Privacy</h4>
+					</div>
+					<div class="modal-body">
+						<img src="../img/privacy-banner.png">
+						<p class='modal-box-header'>Privacy—freedom to wonder (and wander) away from prying eyes—this is why we exist.</p>
+						<p>This program doesn't track what you do on it. We don't try to learn what books you might like, so that we can send you 'smart' suggestions, or so that we can sell that data to a make a few extra bucks. We serve <span class='note'>random</span> snippets, and what you think of those snippets is <span class='note'>your</span> business.</p>
+                        <p>We'll soon be making the code of this program open-source, so you can verify our privacy claims for yourself!</p>
+                        <p>See our full privacy policy <a href='https://100millionbooks.org/privacy' target='_blank'>on our website</a>.</p>
+					</div>
+					<div class="modal-footer">
+						<button class='btn btn-primary' data-dismiss="modal">Great, thanks.</button>
+					</div>
+				</div>
+			</div>
+        </div>
+        
+        <div class="modal fade" id="oc-box" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">The Occasional Curiosity</h4>
+					</div>
+					<div class="modal-body">
+                        <div style='text-align: center;'>
+                            <img src="../img/occasional-branding-transparent.png">
+                        </div>
+						<p class='modal-box-header'>A pretentious digital magazine of intriguing ideas, published every 2 weeks.</p>
+                        <p>All snippets on this program are hand-picked from hours of research across thousands of books, genres, and cultures.</p>
+                        <p>In the process, we come across a LOT of intriguing stuff that doesn't make it here.</p>
+                        <p>We throw it all in a digital magazine called the Occasional Curiosity & publish it twice a month.</p>
+					</div>
+					<div class="modal-footer">
+						<a class='btn btn-primary' href='https://100millionbooks.org/occasional-curiosity' target='_blank' data-dismiss="modal">Check it out <i class="fas fa-angle-right"></i></a>
+					</div>
+				</div>
+			</div>
+        </div>
+        
+        <div class="modal fade" id="rediscovery-box" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">The Rediscovery Series</h4>
+					</div>
+					<div class="modal-body">
+                        <div style='text-align: center;'>
+                            <img src="../img/rediscovery-branding-transparent.png">
+                        </div>
+						<p class='modal-box-header'>A weekly blog series that spotlights books you won't find anywhere else.</p>
+                        <p>A core objective of 100 Million Books is to present the world of books and ideas with no filter. We do this type of discovery—which is free from purposeful social, commercial, and ideological bias—better than anyone else.</p>
+                        <p>And while our apps help us achieve this mission, they achieve it through breadth rather than depth.</p>
+                        <p>This blog series singles out some of the more intriguing items from our collection and discusses them in a bit more depth.</p>
+					</div>
+					<div class="modal-footer">
+						<a class='btn btn-primary' href='https://medium.com/@100millionbooks' target='_blank' data-dismiss="modal">Check it out <i class="fas fa-angle-right"></i></a>
+					</div>
+				</div>
+			</div>
+        </div>
+        
+        <div class="modal fade" id="social-box" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Woeful Media</h4>
+					</div>
+					<div class="modal-body">
+                        <div style='text-align: center;'>
+                            <img src="../img/no-social.jpg">
+                        </div>
+						<p class='modal-box-header'>Reach out on Twitter or Facebook.</p>
+                        <p>We're not huge fans of social media (<a href='https://medium.com/@100millionbooks/why-332a1c325299' target='_blank'>see why here</a>), but we're on there anyway.</p>
+                        <p>Follow us on Twitter <a href='https://twitter.com/100millionbooks' target='_blank'>@100millionbooks</a>, or check out our <a href='https://www.facebook.com/hundredmillionbooks' target='_blank'>Facebook page</a>.</p>
+					</div>
+					<div class="modal-footer">
+						<button class='btn btn-primary' data-dismiss="modal">Great, thanks.</a>
+					</div>
+				</div>
+			</div>
+	    </div>
+        
+        
+        <!--<div class="modal fade" id="history-list" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">History</h4>
+              </div>
+              <div class="modal-body">
+                <p class="note favorites">Past 20 swipes shown, most recent first.</p>
+                <div class='brief-list'>
+                    
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal fade" id="faves-list" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Favorites</h4>
+              </div>
+              <div class="modal-body">
+                <p class="note favorites">Your favorite swipes. Cloud backups & tagging coming soon for Pronto members.</p>
+                <div class='brief-list'>
+                    
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>-->
+        
+        <div id='swipe' class=''>
+            <!--<a href='#' id='show-favorites' data-toggle="tooltip" data-placement="right" title="See your saved swipes."><i class="fa fa-star" aria-hidden="true"></i></a>
+            <a href='#' id='show-history' data-toggle="tooltip" data-placement="right" title='See past 20 swipes.'><i class="fa fa-history" aria-hidden="true"></i></a>
+            <a href='#' id='send-suggestion' data-toggle="tooltip" data-placement="right" title='Send your favorite swipe!'><i class="fa fa-lightbulb-o" aria-hidden="true"></i></a>
+            <a href='#' id='edit-settings' data-toggle="tooltip" data-placement="right" title='Edit Settings.'><i class="fa fa-cog" aria-hidden="true"></i></a>-->
+            <a href='#' id='about-button' data-toggle="tooltip" data-placement="right" title='About Whispers'><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+            <a href='#' id='settings-button' data-toggle="tooltip" data-placement="right" title='Settings'><i class="fa fa-cog" aria-hidden="true"></i></a>
+            <div class='swipe-container no-show-scroll'>
+                
+            </div>
+            <div id='fond-actions'>
+                <!--<a href='#' class='btn btn-primary' id='save-swipe'><i class="fa fa-star" aria-hidden="true"></i> Save</a>-->
+				<p>Like this snippet? Share with this link:</p>
+                <input type='text' value=''>
+            </div>
+        </div>
+        
+        <div id='info' class=''>
+			<div id='premium-note'>
+                <p><span>Next whisper in <span id='time-left'>29:59</span><!--</span><br> <span id="pronto-message">Custom time intervals (and other settings) coming soon.</span></p>-->
+            </div>
+			<div id='book-basics'>
+				<div class='cover-image' style="background-image:url('https://s3.amazonaws.com/allthebooks/covers/bp08c5tF72fSPfgH3.jpg')"></div>
+				<div class='book-meta'>
+					<p class='title'></p>
+					<p class='author'></p>
+					<p class='year'></p>
+				</div>
+			</div>
+        </div>
+        
+    </body>
+    
+    <script>
+    
+        const { ipcRenderer, remote } = require( 'electron' );
+        const is_mac = ( process.platform === 'darwin' ) ? true : false;
+		let interval_timer = null; let seconds = 0;
+		
+		ipcRenderer.send( 'get-next-book' );
+        
+        /*****************
+        register shortcuts
+        *****************/
+        remote.require('electron-localshortcut').register( 'CommandOrControl+N', () => {
+            start_new_tweetstorm();
+            return;
+        });
+        
+        
+        /*****************
+        receive signals from main
+        *****************/
+        
+        ipcRenderer.on( 'get-book-response', ( event, result ) => {  
+			
+			if( result.error ) {
+				$( '.spinner' ).hide();
+				$( '#failed-come-again' ).show();
+				$( '#book-loading-screen' ).fadeIn();
+                
+			} else {
+				mod_the_dom( result.data.book );
+				start_timer( result.data.timestamp );
+				$( '#book-loading-screen' ).fadeOut();
+				$( '#failed-come-again' ).fadeOut();
+			}
+			
+			if( result.data.first_run ) {
+				setTimeout( function() {
+					$( '#about-project' ).modal( { backdrop: 'static', keyboard: false } );
+				}, 1500 );
+			}
+			
+            return;
+        });
+        
+        ipcRenderer.on( 'open-dialog', ( event, message ) => {
+            
+            $( '.modal' ).modal( 'hide' );
+        
+            switch( message ) {
+                case 'settings':
+                    open_settings();
+                    break;
+                case 'about':
+                    $( '#about-project' ).modal( 'show' );
+                    break;
+                case 'privacy':
+                    $( '#privacy-box' ).modal( 'show' );
+                    break;
+                case 'oc':
+                    $( '#oc-box' ).modal( 'show' );
+                    break;
+                case 'rediscovery':
+                $( '#rediscovery-box' ).modal( 'show' );
+                    break;
+                case 'twitter':
+                $( '#social-box' ).modal( 'show' );
+                    break;
+                case 'facebook':
+                $( '#social-box' ).modal( 'show' );
+                    break;
+            }
+        });
+        
+        /*****************
+        window functions
+        *****************/
+		
+		function request_books() {
+			$( '#failed-come-again' ).hide();
+			$( '.spinner' ).fadeIn();
+			
+			setTimeout( function() {
+				ipcRenderer.send( 'get-next-book' );
+			}, 2000 );
+			return;
+		}
+		
+		function start_timer( switch_time ) {
+			
+			//set the end time
+			setTimeout( function() {
+				ipcRenderer.send( 'get-next-book' );
+			}, ( switch_time - ( new Date().getTime() ) ) );
+			
+			//set visual counter
+			let minutes = 0; let remaining_time = 0; let remaining_time_ui = "";
+	
+			clearInterval( interval_timer );
+			
+			remaining_time = ( switch_time - new Date().getTime() ) > 0 ? ( switch_time - new Date().getTime() ) : 0;
+			minutes = Math.floor( remaining_time / 60000 );
+			remaining_time_ui = minutes + ":" + new Date( remaining_time ).toISOString().substr(17, 2);
+			$( "#time-left" ).text( remaining_time_ui );
+			
+			interval_timer = setInterval( function() {
+				
+				remaining_time = ( remaining_time - 1000 ) > 0 ? ( remaining_time - 1000 ) : 0;
+				minutes = Math.floor( remaining_time / 60000 )
+				remaining_time_ui = minutes + ":" + new Date( remaining_time ).toISOString().substr(17, 2);
+				$( "#time-left" ).text( remaining_time_ui );
+				
+				if( remaining_time <= 0 ) {
+					clearInterval( interval_timer );                   
+				} 
+				
+			}, 1000);
+		}
+		
+		function mod_the_dom( book ) {
+			
+			$( '#book-basics .cover-image' ).attr( 'style', "background-image:url(" + book.cover_picture + ")" );
+			$( '#book-basics .title' ).text( book.title );
+			$( '#book-basics .author' ).text( book.author ); 
+			$( '#book-basics .year' ).text( book.year );
+			
+			$( '#swipe .swipe-container' ).html( book.supersnip_text );
+			$( '#swipe .swipe-container .visual-quote' ).append( '<i class="fas fa-quote-left watermark"></i>' );	//<i class="fas fa-quote-right watermark"></i>
+			
+			//remove all appended items before adding new ones
+			$( "#swipe-notes, #swipe-tags, #suggestion-credit, #book-links" ).remove();
+			
+			//add description
+			if( book.description ) {
+				$( '#info' ).append( "<div id='swipe-notes' class='no-show-scroll'><p class='section-lead'>Description</p><div id='notes-container'>" + book.description + "</div></div>" );
+			}
+			
+			//add tags
+			if( book.tags ) {
+				let tags_arr = [];
+				let tags_html = "";
+				
+				tags_arr = ( book.tags ).split( ',' );
+				
+				for( let t in tags_arr ) {
+					tags_html += "<span class='tag'><i class='fas fa-tag'></i> " + tags_arr[t] + "</span>";
+				}
+				
+				$( '#info' ).append( "<div id='swipe-tags'><p>" + tags_html + "</p></div>" );
+			}
+			
+			//suggestion credit
+			if( book.suggested_by_name ) {
+				if( book.suggested_by_link ) {
+					let hostname = "";
+					hostname = getDomain( book.suggested_by_link );
+					
+					$( '#info' ).append( "<div id='suggestion-credit'><p class='section-lead'>Suggested By</p><div id='suggestion-container'>" + "<p><img src='https://www.google.com/s2/favicons?domain=" + hostname + "'> " + "<a href='"+book.suggested_by_link+"' target='_blank'> " + book.suggested_by_name + "</a></p>" + "</div></div>" );
+					
+				} else {
+					$( '#info' ).append( "<div id='suggestion-credit'><p class='section-lead'>Suggested By</p><div id='suggestion-container'>" + "<p>"+ book.suggested_by_name + "</p>" + "</div></div>" );
+				}
+			}
+			
+			//book links
+			if( book.bkwty_url ) {
+			
+				let links_html = "";
+		
+				if( book.asin ) {
+					links_html += "<span class='tag'><a href='https://www.goodreads.com/book/isbn/" + book.asin + "'><i class='fas fa-external-link-alt'></i> Goodreads</a></span>";
+					links_html += "<span class='tag'><a href='https://www.amazon.com/dp/" + book.asin + "'><i class='fas fa-external-link-alt'></i> Amazon</a></span>";
+				}
+				if( book.isbn10 ) {
+					links_html += "<span class='tag'><a href='https://www.librarything.com/isbn/" + book.isbn10 + "'><i class='fas fa-external-link-alt'></i> LibraryThing</a></span>";
+				}
+				
+				$( '#info' ).append( "<div id='book-links'><p class='section-lead'>See More</p><p>" + links_html + "</p></div>" );
+			}
+			
+			//share link
+			$( '#fond-actions input' ).attr( 'value', "https://100millionbooks.org/snippet?uid=" + book.uid );
+			
+			
+			return;
+		}
+		
+		function getDomain(url, subdomain) {
+			subdomain = subdomain || false;
+
+			url = url.replace(/(https?:\/\/)?(www.)?/i, '');
+
+			if (!subdomain) {
+				url = url.split('.');
+
+				url = url.slice(url.length - 2).join('.');
+			}
+
+			if (url.indexOf('/') !== -1) {
+				return url.split('/')[0];
+			}
+
+			return url;
+		}
+		
+		//save email from input
+		function save_email() {
+			
+			$( "#stay-in-touch .modal-footer i.get-email-status" ).hide();
+			$( "#stay-in-touch .modal-footer i.get-email-status.loading" ).fadeIn();
+			
+			let user_email_input = $( "#stay-in-touch .modal-body input[type='email']" ).val();
+			
+			let re = /\S+@\S+/;
+			if( ( user_email_input.length !== 0 ) && ( re.test( user_email_input ) ) ) {
+				
+				$.getJSON( process.env.DA_HOST + '?get_new_email_address=' + encodeURIComponent(user_email_input) + '&client=' + process.platform + '&callback=?' )
+
+				.done( function( json ) {
+					
+					$( "#stay-in-touch .modal-footer i.get-email-status" ).hide();
+					$( "#stay-in-touch .modal-footer i.get-email-status.success" ).fadeIn();
+					
+					setTimeout( function() {
+						$( '#stay-in-touch' ).modal( 'hide' );
+						$( "#stay-in-touch .modal-footer i.get-email-status" ).hide();
+						$( "#stay-in-touch .modal-body input[type='email']" ).val( "" );
+					}, 1200 );
+				})
+				
+				.fail( function( jqxhr, textStatus, error ) {
+					$( "#stay-in-touch .modal-footer i.get-email-status" ).hide();
+					$( "#stay-in-touch .modal-footer i.get-email-status.fail" ).fadeIn();
+				});
+				
+				
+			} else {
+				$( "#stay-in-touch .modal-footer i.get-email-status" ).hide();
+				$( "#stay-in-touch .modal-footer i.get-email-status.fail" ).fadeIn();
+			}
+			
+			return;
+		
+		}
+        
+        function open_settings() {
+        
+            $( '#app-settings' ).modal( 'show' );
+                
+            remote.require('electron-json-storage').get( 'app_defaults', function( error, ad ) {
+                $('#setting-whisper-interval input').val( ad.whisper_interval / 60000 );
+                $('#setting-whisper-duration input').val( ad.whisper_duration );
+                
+                $( '#setting-whisper-interval .setting-readout span' ).text( ad.whisper_interval / 60000 )
+                $( '#setting-whisper-duration .setting-readout span' ).text( ad.whisper_duration );
+                
+                if( ad.autostart ) {
+                    $( '#setting-autostart input' ).bootstrapToggle( 'on' );
+                } else {
+                    $( '#setting-autostart input' ).bootstrapToggle( 'off' );
+                }
+            });
+            
+            return;
+        }
+        
+        function set_settings() {
+            
+            const auto_start = $( '#setting-autostart input' ).prop('checked');
+            
+            remote.require('electron-json-storage').set( 'app_defaults', {
+                whisper_interval: ( $( '#setting-whisper-interval input' ).val() ) * 60000,
+                whisper_duration: $( '#setting-whisper-duration input' ).val(),
+                autostart: auto_start
+            });
+            
+            ipcRenderer.send( 'toggle-autostart', auto_start );
+            
+            return;
+        }
+        
+        /*****************
+        dom stuff
+        *****************/
+        $( document ).ready( function() {
+		
+			//activate all tooltips
+			$('[data-toggle="tooltip"]').tooltip();
+			
+			//fade out title loading screen every time this window is opened
+			setTimeout( function() {
+				$( '#loading-screen' ).fadeOut();
+			}, 2000 );
+			
+			//request reload from fail screen
+			$( '#failed-come-again button' ).on( 'click', function() {
+				request_books();
+				return;
+			});
+		
+			//automatically highlight shareable link when input is clicked
+			$( '#fond-actions input' ).on( 'click', function() {
+				this.select();
+				return;
+			});
+			
+			//show about modal
+			$( '#about-button' ).on( 'click', function() {
+				$( '#about-project' ).modal( 'show' );
+			});
+			
+			//hide about modal and show email modal
+			$( '#about-project .modal-footer button' ).on( 'click', function() {
+				$( '#about-project' ).modal( 'hide' );
+				$( '#stay-in-touch' ).modal( 'show' );
+				$( "#stay-in-touch input[type='email']" ).focus()
+			});
+            
+            //show settings modal
+			$( '#settings-button' ).on( 'click', function() {
+                open_settings(); 
+			});
+            
+            $( 'button.settings-done' ).on( 'click', function() {
+                $( '#app-settings' ).modal( 'hide' );
+            });
+            
+            $('#setting-whisper-interval input').on( 'change', function() {
+                $( '#setting-whisper-interval .setting-readout span' ).text( $('#setting-whisper-interval input').val() );
+                
+                set_settings();
+               
+                return;
+            });
+            
+            $('#setting-whisper-duration input').on( 'change', function() {
+                $( '#setting-whisper-duration .setting-readout span' ).text( $('#setting-whisper-duration input').val() );
+                
+                set_settings();
+                
+                return;
+            });
+            
+            $('#setting-autostart input').on( 'change', function() {
+                
+                set_settings();
+                return;
+            });
+			
+			//hide email modal / send email if requested
+			$( '#stay-in-touch .modal-footer button.no-thanks' ).on( 'click', function() {
+				$( '#stay-in-touch' ).modal( 'hide' );
+			});
+			$( '#stay-in-touch .modal-footer button.send-email' ).on( 'click', function() {
+				//$( '#stay-in-touch' ).modal( 'hide' );
+				save_email();
+			});
+			
+			$( "#stay-in-touch input[type='email']" ).keypress( function(e) {
+				if (e.which == 13) {
+					save_email();
+				}
+			});
+			
+			//force all external links to open in default system browser
+			$( document ).on( 'click', 'a[href^="http"]', function( event ) {
+				event.preventDefault();
+				remote.require('electron').shell.openExternal( this.href );
+			});
+        });
+        
+    </script>
+</html>

@@ -1,0 +1,8 @@
+node_modules/
+img/
+build/
+dist/
+fonts/
+.env
+*.tgz
+*.log

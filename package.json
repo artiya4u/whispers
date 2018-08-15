@@ -1,0 +1,51 @@
+{
+    "name": "whispers-100millionbooks",
+    "productName": "Whispers",
+    "copyright": "© 2018 Canon of Man LLC",
+    "version": "0.5.0",
+    "description": "A desktop client for 100 Million Books.",
+    "author": "Canon of Man LLC",
+    "license": "AGPL-3.0",
+    "homepage": "https://100millionbooks.org",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/100millionbooks/whispers.git"
+    },
+    "main": "./src/main.js",
+    "scripts": {
+        "start": "electron .",
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder"
+    },
+    "build": {
+        "appId": "com.electron.100millionbooks.whispers",
+        "linux": {
+            "target": ["AppImage", "deb"],
+            "maintainer": "Steve Jain",
+            "vendor": "Canon of Man LLC",
+            "category": "Education"
+        },
+        "files": [
+            "js/*",
+            "css/*",
+            "src/*",
+            ".env",
+            "img/*",
+            "fonts/*"
+        ]
+    },
+    "devDependencies": {
+        "electron": "^1.8.4",
+        "electron-builder": "^20.18.0"
+    },
+    "dependencies": {
+        "auto-launch": "^5.0.5",
+        "dotenv": "^5.0.1",
+        "electron-json-storage": "^4.1.0",
+        "electron-localshortcut": "^3.1.0",
+        "electron-simple-updater": "^1.2.3",
+        "electron-store": "^1.3.0",
+        "randomstring": "^1.1.5",
+        "request": "^2.87.0"
+    }
+}
