@@ -4,7 +4,7 @@
 
 100 Million Books exists to bring serendipity & unrestricted freedom back to book discovery, just like the old days before algorithms took over with social networks and search engines. 
 
-This service also serves as a critique of modern media and the damage it's done to discourse on current affairs. See more at this article[Why](https://medium.com/@100millionbooks/why-332a1c325299) and a more recent one [A More Medium Medium](https://medium.com/@100millionbooks/a-truly-medium-medium-a584208bd622) to learn more about our objectives.
+This service also serves as a critique of modern media and the damage it's done to discourse on current affairs. See more at this article [Why](https://medium.com/@100millionbooks/why-332a1c325299) and a more recent one [A More Medium Medium](https://medium.com/@100millionbooks/a-truly-medium-medium-a584208bd622) to learn more about our objectives.
 
 To maximize the integrity of this environment of intellectual freedom, user privacy is a top priority. That's a big reason this source code is open, and we'll continue to open access to other client code bases, server code, and underlying data as we can.
 
@@ -40,6 +40,12 @@ To build, make sure you have `npm` and `yarn`. The build tool works best with ya
 2. Then `yarn`.
 3. Make sure build settings in `package.json` are to your liking.
 4. Run `yarn dist`. You'll find what you want in `/dist`.
+
+## Note to Code Snobs
+
+Yes, this program is built with jQuery. Fight me.
+
+For now, I'm focused on features and growth. I may migrate to React at some point, when complexity demands it, but for now, it works just fine.
 
 ## License
 
