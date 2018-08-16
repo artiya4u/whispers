@@ -324,17 +324,8 @@
 		let interval_timer = null; let seconds = 0;
 		
 		ipcRenderer.send( 'get-next-book' );
-        
-        /*****************
-        register shortcuts
-        *****************/
+		
 
-        remote.require('electron-localshortcut').register( 'CommandOrControl+N', () => {
-            start_new_tweetstorm();
-            return;
-        });
-        
-        
         /*****************
         receive signals from main
         *****************/
@@ -396,9 +387,10 @@
 			$( '#update-available .modal-footer a' ).attr( 'href', data.download_link ) ;
 			$( '#update-available' ).modal( { backdrop: 'static', keyboard: false } );
 		});
-        
+		
+		
         /*****************
-        window functions
+        book-specific functions
         *****************/
 		
 		function request_books() {
@@ -443,6 +435,7 @@
 			}, 1000);
 		}
 		
+		//put book data in place
 		function mod_the_dom( book ) {
 			
 			$( '#book-basics .cover-image' ).attr( 'style', "background-image:url(" + book.cover_picture + ")" );
@@ -528,8 +521,12 @@
 
 			return url;
 		}
+
 		
-		//save email from input
+		/*****************
+        process email input
+        *****************/
+
 		function save_email() {
 			
 			$( "#stay-in-touch .modal-footer i.get-email-status" ).hide();
@@ -568,6 +565,11 @@
 			return;
 		
 		}
+
+
+		/*****************
+        settings stuff
+        *****************/
         
         function open_settings() {
         
@@ -604,10 +606,12 @@
             
             return;
         }
-        
+		
+		
         /*****************
         dom stuff
         *****************/
+
         $( document ).ready( function() {
 		
 			//activate all tooltips
@@ -649,31 +653,33 @@
             
             $( 'button.settings-done' ).on( 'click', function() {
                 $( '#app-settings' ).modal( 'hide' );
-            });
+			});
+			
+			/*****************
+			handle changes in settings...this needs to be refactored.
+			*****************/
             
             $('#setting-whisper-interval input').on( 'change', function() {
                 $( '#setting-whisper-interval .setting-readout span' ).text( $('#setting-whisper-interval input').val() );
-                
                 set_settings();
-               
                 return;
             });
             
             $('#setting-whisper-duration input').on( 'change', function() {
                 $( '#setting-whisper-duration .setting-readout span' ).text( $('#setting-whisper-duration input').val() );
-                
                 set_settings();
-                
                 return;
             });
             
             $('#setting-autostart input').on( 'change', function() {
-                
                 set_settings();
                 return;
             });
 			
-			//hide email modal / send email if requested
+			/*****************
+			*****************/
+
+			//hide email modal or register email if requested
 			$( '#stay-in-touch .modal-footer button.no-thanks' ).on( 'click', function() {
 				$( '#stay-in-touch' ).modal( 'hide' );
 			});

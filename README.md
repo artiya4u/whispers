@@ -2,17 +2,27 @@
 
 ## What is 100 Million Books?
 
-100 Million Books exists to bring serendipity & unrestricted freedom back to book discovery, just like the old days before algorithms took over with social networks and search engines. 
+100 Million Books exists to bring serendipity & unrestricted freedom back to book discovery, just like the old days before algorithms took over with social networks and search engines. Several thousand people already use the [Chrome extension](https://chrome.google.com/webstore/detail/100-million-books/hcbonpnnmoidfnofkomcgocldoefjmaj) and [Android app](https://play.google.com/store/apps/details?id=com.canonofman.hundredmillionbooks&hl=en_US).
 
 The service also serves as a critique of modern media and the damage it's done to discourse on current affairs. Check out [Why](https://medium.com/@100millionbooks/why-332a1c325299) and [A More Medium Medium](https://medium.com/@100millionbooks/a-truly-medium-medium-a584208bd622) to learn more.
 
-To maximize the integrity of this environment of intellectual freedom, user privacy is a top priority. That's a big reason this source code is open, and we'll continue to open access to other client code bases, server code, and underlying data as we can.
+To maximize the integrity of this environment of intellectual freedom, user privacy is a top priority. That's a big reason this source code is open, and we'll continue to open access to other client code, server code, and underlying data as we can.
 
 ## What does this program do?
 
-Whispers is a desktop client for the 100 Million Books service. It offers discreet notifications of meaningful ideas from random books throughout the day. You'll probably miss most of them, which is intended (we don't want to distract you), but the ones you do notice may open your mind to ideas & inspiration you wouldn't have seen anywhere else.
+Whispers is a desktop client for the 100 Million Books service. It offers discreet notifications of meaningful ideas from random books throughout the day. You'll probably miss most of them, which is intended (the program shouldn't be distracting), but the ones you do notice may open your mind to ideas & inspiration you wouldn't have seen anywhere else.
 
-It's like browsing a bookstore with all the books ever published, right on your laptop, without lifting a finger, while you go about your day.
+Here's an example of a notification:
+
+<img src="https://100millionbooks.org/img/github/100mb-alert-demo-edited.gif" />
+
+Did you catch it? It appeared for a split second on the bottom right: greyscale, no pictures, and slightly translucent. Very easy to miss.
+
+But if you do happen to catch the notification, and it sparks your interest, you can hop over to the program window to see more detail:
+
+<img src="https://100millionbooks.org/img/github/100mb-window-demo.gif" />
+
+That's it. Simple.
 
 ## Currently in Beta
 
@@ -26,18 +36,20 @@ Please send feedback! You can submit an issue here, [send an email](mailto:steve
 
 Furthermore, you can verify the integrity of the install files with the `.sig` files bundled in each release.
 
-Thus you can be confident the install files are safe for your computer. If you still aren't, you're welcome to inspect the code and build the program yourself with the steps outlined below.
+Thus you can be confident the install files are safe for your computer. Otherwise, you're welcome to inspect the code and build the program yourself with the steps outlined below.
 
-## Note for Linux Users
+## Note to Linux Users
 
 If you're on a Debian-based distribution, you'll be better off using the `.deb` binary. If you use the `.AppImage` binary, the program won't start automatically when you log in (unless you manually tweak the startup path...since an `AppImage` is basically a portable program, the OS won't know what file to execute upon logging in unless you specify it).
 
 ## Build it Yourself
 
-To build, make sure you have `npm` and `yarn`. I use npm for development and yarn to build, although you might be able to get away with using yarn for everything.
+To build, make sure you have `npm` and `yarn`. By habit I use npm for development, but the build tool works best with yarn. You might be able to get with using yarn for everything, but I haven't tried that. 
+
+In any case, this works:
 
 1. Run `npm install`.
-2. Then `yarn`.
+2. Then run `yarn`.
 3. Make sure build settings in `package.json` are to your liking.
 4. Run `yarn dist`. You'll find what you want in `/dist`.
 

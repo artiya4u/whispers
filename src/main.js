@@ -94,7 +94,7 @@ app.on( 'ready', function() {
 function set_defaults() {
     
     storage.set( 'app_defaults', {
-        whisper_interval: 1200000,  //default is 20 minutes
+        whisper_interval: 1200000,      //default is 20 minutes
         whisper_duration: 1200,
         autostart: true
     });
@@ -243,11 +243,13 @@ function load_books( send_back, event, first_run, cid ) {
                             break;
                     }
                     
-                    mainWindow.webContents.send( 'new-updook', cate-available', { download_link: link, update_details: body['body'] } );
+                    mainWindow.webContents.send( 'new-update-available', { download_link: link, update_details: body['body'] } );
                 }
             }
         }
     });
+	
+	return;
 }
 
 function getDownloadLink( arr, target ) {
