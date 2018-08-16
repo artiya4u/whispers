@@ -4,7 +4,7 @@
 
 100 Million Books exists to bring serendipity & unrestricted freedom back to book discovery, just like the old days before algorithms took over with social networks and search engines. 
 
-This service also serves as a critique of modern media and the damage it's done to discourse on current affairs. See more at this article [Why](https://medium.com/@100millionbooks/why-332a1c325299) and a more recent one [A More Medium Medium](https://medium.com/@100millionbooks/a-truly-medium-medium-a584208bd622) to learn more about our objectives.
+The service also serves as a critique of modern media and the damage it's done to discourse on current affairs. Check out [Why](https://medium.com/@100millionbooks/why-332a1c325299) and [A More Medium Medium](https://medium.com/@100millionbooks/a-truly-medium-medium-a584208bd622) to learn more.
 
 To maximize the integrity of this environment of intellectual freedom, user privacy is a top priority. That's a big reason this source code is open, and we'll continue to open access to other client code bases, server code, and underlying data as we can.
 
@@ -30,11 +30,11 @@ Thus you can be confident the install files are safe for your computer. If you s
 
 ## Note for Linux Users
 
-If you're on a Debian-based distribution, you'll be better off using the `.deb` binary. If you use the `.AppImage` binary, the program won't start autoamtically when you log in (unless you manually tweak the startup path...since an `AppImage` is basically a portable program, the OS won't know what file to execute upon logging in unless you specify it).
+If you're on a Debian-based distribution, you'll be better off using the `.deb` binary. If you use the `.AppImage` binary, the program won't start automatically when you log in (unless you manually tweak the startup path...since an `AppImage` is basically a portable program, the OS won't know what file to execute upon logging in unless you specify it).
 
 ## Build it Yourself
 
-To build, make sure you have `npm` and `yarn`. The build tool works best with yarn.
+To build, make sure you have `npm` and `yarn`. I use npm for development and yarn to build, although you might be able to get away with using yarn for everything.
 
 1. Run `npm install`.
 2. Then `yarn`.
