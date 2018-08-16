@@ -51,7 +51,7 @@ ipcMain.on( 'get-next-book', ( event, arg ) => {
 	//check books
 	storage.get( 'current_book', function( error, cb ) {
 		if( ( Object.keys( cb ) ).length ) {
-			if( cb.timestamp > ( new Date().getTime() ) ) {		//10 seconds
+			if( cb.timestamp > ( new Date().getTime() ) ) {
 				launch_whisper( cb );
 				event.sender.send( 'get-book-response', { error: false, data: cb } );
 			} else {
@@ -84,11 +84,8 @@ app startup stuff
 
 //listen for app to be ready
 app.on( 'ready', function() { 
-
 	launch_main_window();
-   
 	return;
-    
 });
 
 /*****************
@@ -125,7 +122,7 @@ function pop_new_book( event ) {
     //check for software updates
     request( "https://api.github.com/repos/100millionbooks/whispers/releases/latest", { json: true, headers: { 'User-Agent': 'Whispers' } }, ( err, res, body ) => {
         if( err ) { 
-            console.log( "Error in checking for updates." );
+            console.log( "Got error while checking for updates." );
             return;
         } else {
 
@@ -173,7 +170,7 @@ function getDownloadLink( arr, target ) {
 function set_defaults() {
     
     storage.set( 'app_defaults', {
-        whisper_interval: 20000,    //1200000
+        whisper_interval: 1200000,  //default is 20 minutes
         whisper_duration: 1200,
         autostart: true
     });
@@ -260,8 +257,6 @@ function load_books( send_back, event, first_run, cid ) {
             }
         }
     });
-
-    
 }
 
 function transform_data( json ) {
@@ -320,7 +315,7 @@ function launch_whisper( cb ) {
         opacity: 0.8,
 		fullscreenable: false,
 		focusable: false,
-        //darkTheme: true,    //
+        //darkTheme: true,    
         thickFrame: false,  //only for windows
         //type: 'notification'    //only valid for linux
     });
@@ -415,7 +410,7 @@ function launch_main_window() {
 }
 
 //add developer tools option if in dev
-if( process.env.NODE_ENV === 'development' ) {
+/* if( process.env.NODE_ENV === 'development' ) {
     electronLocalshortcut.register( 'CommandOrControl+I', () => {
         mainWindow.toggleDevTools();
         //return;
@@ -424,7 +419,7 @@ if( process.env.NODE_ENV === 'development' ) {
         mainWindow.reload();
         //return;
     });
-}
+} */
 
 //if OSX, add empty object to menu
 if( process.platform == 'darwin' ) {

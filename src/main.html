@@ -63,7 +63,7 @@
 						<p>That's generations of knowledge & wisdom—lost. Whispers helps you rediscover this massive store of wisdom.</p>
 						<p>Every few minutes, you'll get a small notification about a new book. It'll be quick and subtle—so you will probably miss it (that's by design...we don't want to distract you!)—but if you happen to catch one you like, hop to this window for a hand-picked snippet from the book.</p>
 						<p>This program is part of the <a href='https://100millionbooks.org/' target='_blank'>100 Million Books</a> project. Check out our <a href='https://100millionbooks.org/transparency/' target='_blank'>Transparency Report</a> to see more about the books we feature. You can read more about our mission <a href='https://medium.com/@100millionbooks/why-332a1c325299'>here</a>.</p>
-						<p class='note'>v0.5.0<br>Please note that this software is in beta. It may not be very stable, and it's missing some features.</p>
+						<p class='note'>v0.5.0<br>Please note that this software is a beta release. If you encounter issues, please send email.</p>
 					</div>
 					<div class="modal-footer">
 						<button class='btn btn-primary'>One More Thing <i class="fas fa-angle-right"></i></button>
@@ -303,7 +303,7 @@
         
         <div id='info' class=''>
 			<div id='premium-note'>
-                <p><span>Next whisper in <span id='time-left'>29:59</span><!--</span><br> <span id="pronto-message">Custom time intervals (and other settings) coming soon.</span></p>-->
+                <p><span>Next whisper in <span id='time-left'>19:59</span><!--</span><br> <span id="pronto-message">Custom time intervals (and other settings) coming soon.</span></p>-->
             </div>
 			<div id='book-basics'>
 				<div class='cover-image' style="background-image:url('https://s3.amazonaws.com/allthebooks/covers/bp08c5tF72fSPfgH3.jpg')"></div>
@@ -328,6 +328,7 @@
         /*****************
         register shortcuts
         *****************/
+
         remote.require('electron-localshortcut').register( 'CommandOrControl+N', () => {
             start_new_tweetstorm();
             return;
@@ -337,7 +338,7 @@
         /*****************
         receive signals from main
         *****************/
-        
+
         ipcRenderer.on( 'get-book-response', ( event, result ) => {  
 			
 			if( result.error ) {
@@ -407,6 +408,7 @@
 			setTimeout( function() {
 				ipcRenderer.send( 'get-next-book' );
 			}, 2000 );
+			
 			return;
 		}
 		
