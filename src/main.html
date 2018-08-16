@@ -319,8 +319,8 @@
     
     <script>
     
-        const { ipcRenderer, remote } = require( 'electron' );
-        const is_mac = ( process.platform === 'darwin' ) ? true : false;
+		const { ipcRenderer, remote } = require( 'electron' );
+		let dotenv = "";
 		let interval_timer = null; let seconds = 0;
 		
 		ipcRenderer.send( 'get-next-book' );
@@ -345,6 +345,7 @@
 			}
 			
 			if( result.data.first_run ) {
+				dotenv = result.data.dotenv;
 				setTimeout( function() {
 					$( '#about-project' ).modal( { backdrop: 'static', keyboard: false } );
 				}, 1500 );
@@ -537,7 +538,7 @@
 			let re = /\S+@\S+/;
 			if( ( user_email_input.length !== 0 ) && ( re.test( user_email_input ) ) ) {
 				
-				$.getJSON( process.env.DA_HOST + '?get_new_email_address=' + encodeURIComponent(user_email_input) + '&client=' + process.platform + '&callback=?' )
+				$.getJSON( dotenv + '?get_new_email_address=' + encodeURIComponent(user_email_input) + '&client=' + process.platform + '&callback=?' )
 
 				.done( function( json ) {
 					

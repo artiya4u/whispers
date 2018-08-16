@@ -16,13 +16,11 @@ Here's an example of a notification:
 
 <img src="https://100millionbooks.org/img/github/100mb-alert-demo-edited.gif" />
 
-Did you catch it? It appeared for a split second on the bottom right: greyscale, no pictures, and slightly translucent. Very easy to miss.
+Did you catch it? It appeared for a split second on the bottom right: greyscale, no graphics, and slightly translucent. Very easy to miss. If you prefer, you can configure the notification to show even more briefly.
 
 But if you do happen to catch the notification, and it sparks your interest, you can hop over to the program window to see more detail:
 
 <img src="https://100millionbooks.org/img/github/100mb-window-demo.gif" />
-
-That's it. Simple.
 
 ## Currently in Beta
 

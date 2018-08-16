@@ -117,7 +117,8 @@ function pop_new_book( event ) {
 		if( data.books.length ) {
 			let cb = {};
 			cb.book = data.books.shift();
-			cb.timestamp = ( new Date().getTime() + data.app_defaults.whisper_interval );
+            cb.timestamp = ( new Date().getTime() + data.app_defaults.whisper_interval );
+            cb.dotenv = process.env.DA_HOST;
 			
 			launch_whisper( cb );
 			event.sender.send( 'get-book-response', { error: false, data: cb } );
@@ -204,6 +205,7 @@ function load_books( send_back, event, first_run, cid ) {
                         storage.set( 'current_book', cb, function() {
                         
                             cb.first_run = first_run;
+                            cb.dotenv = process.env.DA_HOST;
                         
                             launch_whisper( cb );
                             event.sender.send( 'get-book-response', { error: false, data: cb } );
@@ -422,17 +424,14 @@ function launch_main_window() {
 shortcuts
 *****************/
 
-//add developer tools option if in dev mode
-if( process.env.NODE_ENV === 'development' ) {
-    electronLocalshortcut.register( 'CommandOrControl+I', () => {
-        mainWindow.toggleDevTools();
-        //return;
-    });
-    electronLocalshortcut.register( 'CommandOrControl+R', () => {
-        mainWindow.reload();
-        //return;
-    });
-}
+electronLocalshortcut.register( 'CommandOrControl+I', () => {
+    mainWindow.toggleDevTools();
+    //return;
+});
+electronLocalshortcut.register( 'CommandOrControl+R', () => {
+    mainWindow.reload();
+    //return;
+});
 
 
 /*****************
