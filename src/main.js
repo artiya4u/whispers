@@ -13,17 +13,17 @@ const { app, BrowserWindow, Menu, ipcMain, dialog } = electron;
 let mainWindow;
 let mainMenuTemplate = []; 
 
+
+/*****************
+crucial app-wide settings
+*****************/
+
 const envPath = path.join( ( __dirname ).substring( 0, ( __dirname.length - 4 ) ), '/.env' );
 dotenv.config( { path: envPath } );
 
 const autolauncher = new AutoLaunch({
     name: 'Whispers, by 100 Million Books'
 });
-
-
-/*****************
-crucial app-wide settings
-*****************/
 
 if( process.platform === 'linux' ) {
     app.commandLine.appendSwitch('enable-transparent-visuals');
@@ -35,6 +35,8 @@ if( process.platform === 'linux' ) {
 app-wide listeners
 *****************/
 
+//this function is a catch-all for any unhandled errors. it should not ever fire, but 
+//it's here just in case, to prevent abrupt program closure in case of an unknown edge case.
 process.on( 'uncaughtException', function( e ) {  
     console.log( e );
     dialog.showErrorBox( "Error", "Unknown error. If this keeps happening, tell the developer.");
@@ -45,7 +47,7 @@ process.on( 'uncaughtException', function( e ) {
 interwindow communication
 *****************/
 
-//listen for request for new book
+//listen for request for new book from main window
 ipcMain.on( 'get-next-book', ( event, arg ) => {  
 	
 	//check books
@@ -66,6 +68,7 @@ ipcMain.on( 'get-next-book', ( event, arg ) => {
 	return;
 });
 
+//listen for autostart setting change from main window
 ipcMain.on( 'toggle-autostart', ( event, arg ) => {  
 	
     if( arg ) {
@@ -88,10 +91,25 @@ app.on( 'ready', function() {
 	return;
 });
 
+function set_defaults() {
+    
+    storage.set( 'app_defaults', {
+        whisper_interval: 1200000,  //default is 20 minutes
+        whisper_duration: 1200,
+        autostart: true
+    });
+    
+    autolauncher.enable();
+    
+    return;
+}
+
+
 /*****************
-functions
+book-related tasks
 *****************/
 
+//get a new whisper when the timer runs out; load books if necessary
 function pop_new_book( event ) {
 	
 	storage.getMany( [ 'books', 'app_defaults' ], function( error, data ) {
@@ -118,74 +136,17 @@ function pop_new_book( event ) {
 			prepare_load_books( true, event );
 		}
     });
-    
-    //check for software updates
-    request( "https://api.github.com/repos/100millionbooks/whispers/releases/latest", { json: true, headers: { 'User-Agent': 'Whispers' } }, ( err, res, body ) => {
-        if( err ) { 
-            console.log( "Got error while checking for updates." );
-            return;
-        } else {
-
-            if( ( typeof body === 'object' ) && body.hasOwnProperty( 'tag_name' ) ) {
-                let newestv = body['tag_name'];
-                let currentv = 'v' + app.getVersion();
-                
-                if( newestv !== currentv ) {
-                    let link = "";
-                    switch( process.platform ) {
-                        case 'darwin':
-                            link = getDownloadLink( body['assets'], 'darwin' );
-                            break;
-                        case 'win32':
-                            link = getDownloadLink( body['assets'], 'win32' );
-                            break;
-                        default:
-                            link = "https://github.com/100millionbooks/whispers/releases/latest";
-                            break;
-                    }
-                    
-                    mainWindow.webContents.send( 'new-update-available', { download_link: link, update_details: body['body'] } );
-                }
-            }
-        }
-    });
 	
 	return;
 }
 
-function getDownloadLink( arr, target ) {
-    
-	let link = "https://100millionbooks.org";
-    const file_type = ( target === 'darwin' ) ? 'application/x-apple-diskimage' : 'application/x-ms-dos-executable';
-    
-    arr.forEach(function(e) {
-        if( e.content_type === file_type ) {
-            link = e.browser_download_url;
-        }
-    });
-
-    return link;
-}
-
-function set_defaults() {
-    
-    storage.set( 'app_defaults', {
-        whisper_interval: 1200000,  //default is 20 minutes
-        whisper_duration: 1200,
-        autostart: true
-    });
-    
-    autolauncher.enable();
-    
-    return;
-}
-
+//once we know we need to load more books, ensure defaults and client id are set.
 function prepare_load_books( send_back, event ) {
 	
 	storage.get( 'first_run', function( error, fr ) {
 		
 		let first_run = false;
-		if( fr ) {	//{}, the default when it's unset (e.g., first run)
+		if( fr ) {	//unset value is {} (e.g., first run)
 			first_run = true;
             set_defaults();
 			storage.set( 'first_run', false );
@@ -193,7 +154,7 @@ function prepare_load_books( send_back, event ) {
 		
         storage.get( 'client_id', function( error, cid ) {
             
-            if( typeof cid === 'object' ) { //will be string if already set
+            if( typeof cid === 'object' ) {     //will be string if already set
                 let new_client_id = process.platform + randomstring.generate(54);
                 storage.set( 'client_id', new_client_id, function() {
                     load_books( send_back, event, first_run, new_client_id );
@@ -203,8 +164,7 @@ function prepare_load_books( send_back, event ) {
             }
             
         });
-	});
-	
+	});	
 }
 
 function load_books( send_back, event, first_run, cid ) {
@@ -253,10 +213,55 @@ function load_books( send_back, event, first_run, cid ) {
                     }
                 });
             } catch(e) {
-                //don't do anything
+                //don't do anything. will silently fail and try loading more books on the next 
             }
         }
     });
+
+    //check for software updates
+    request( "https://api.github.com/repos/100millionbooks/whispers/releases/latest", { json: true, headers: { 'User-Agent': 'Whispers' } }, ( err, res, body ) => {
+        if( err ) { 
+            console.log( "Got error while checking for updates." );
+            return;
+        } else {
+
+            if( ( typeof body === 'object' ) && body.hasOwnProperty( 'tag_name' ) ) {
+                let newestv = body['tag_name'];
+                let currentv = 'v' + app.getVersion();
+                
+                if( newestv !== currentv ) {
+                    let link = "";
+                    switch( process.platform ) {
+                        case 'darwin':
+                            link = getDownloadLink( body['assets'], 'darwin' );
+                            break;
+                        case 'win32':
+                            link = getDownloadLink( body['assets'], 'win32' );
+                            break;
+                        default:
+                            link = "https://github.com/100millionbooks/whispers/releases/latest";
+                            break;
+                    }
+                    
+                    mainWindow.webContents.send( 'new-updook', cate-available', { download_link: link, update_details: body['body'] } );
+                }
+            }
+        }
+    });
+}
+
+function getDownloadLink( arr, target ) {
+    
+	let link = "https://100millionbooks.org";
+    const file_type = ( target === 'darwin' ) ? 'application/x-apple-diskimage' : 'application/x-ms-dos-executable';
+    
+    arr.forEach(function(e) {
+        if( e.content_type === file_type ) {
+            link = e.browser_download_url;
+        }
+    });
+
+    return link;
 }
 
 function transform_data( json ) {
@@ -287,9 +292,13 @@ function transform_data( json ) {
 	return json;
 }
 
+/*****************
+launch windows. whispers are actually little windows styled as notifications.
+*****************/
+
 function launch_whisper( cb ) {
 	
-    let {width, height} = electron.screen.getPrimaryDisplay().size;
+    let { width, height } = electron.screen.getPrimaryDisplay().size;
 	
 	let icon_pic = "";
 	if( (process.platform == 'darwin') ) {
@@ -316,8 +325,8 @@ function launch_whisper( cb ) {
 		fullscreenable: false,
 		focusable: false,
         //darkTheme: true,    
-        thickFrame: false,  //only for windows
-        //type: 'notification'    //only valid for linux
+        thickFrame: false,          //only for windows
+        //type: 'notification'      //only for linux
     });
     
     whisper.loadURL(url.format({
@@ -325,9 +334,9 @@ function launch_whisper( cb ) {
         protocol: 'file:',
         slashes: true
     }));
-	
+    
+    //get text to show in whisper notification window
 	let author_and_title = cb.book.author.split( "," )[0] + ": " + cb.book.title;	//only show first author's name
-	
 	let supersnip_stripped = ( cb.book.supersnip_text ).replace( /<[^>]+>/g, '' );	//strip html
     supersnip_stripped = supersnip_stripped.replace( /\n|\r/g, ' ');	//strip line breaks
 
@@ -337,9 +346,7 @@ function launch_whisper( cb ) {
     });
 
     whisper.on( 'show', function( w ) {
-        
         storage.get( 'app_defaults', function( error, ad ) {
-            
             setTimeout( function() {
                 try {
                     whisper.close();
@@ -370,7 +377,7 @@ function launch_main_window() {
 	}
     
     //create new window
-    let {width, height} = electron.screen.getPrimaryDisplay().size;
+    let { width, height } = electron.screen.getPrimaryDisplay().size;
     height = parseInt(height * 0.75, 10);
     width = parseInt(width * 0.75, 10);
     mainWindow = new BrowserWindow({
@@ -409,8 +416,12 @@ function launch_main_window() {
     return;
 }
 
-//add developer tools option if in dev
-/* if( process.env.NODE_ENV === 'development' ) {
+/*****************
+shortcuts
+*****************/
+
+//add developer tools option if in dev mode
+if( process.env.NODE_ENV === 'development' ) {
     electronLocalshortcut.register( 'CommandOrControl+I', () => {
         mainWindow.toggleDevTools();
         //return;
@@ -419,7 +430,12 @@ function launch_main_window() {
         mainWindow.reload();
         //return;
     });
-} */
+}
+
+
+/*****************
+set program menus
+*****************/
 
 //if OSX, add empty object to menu
 if( process.platform == 'darwin' ) {
