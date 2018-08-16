@@ -38,3 +38,14 @@ To build, make sure you have `npm` and `yarn`.
 2. Then `yarn`.
 3. Make sure build settings in `package.json` are to your liking.
 4. Run `yarn dist`. You'll find what you want in `/dist`.
+
+## License
+
+Whispers is [free software](https://www.gnu.org/philosophy/free-sw.html), licensed under Version 3 of the [GNU Affero General Public License](https://gnu.org/licenses/agpl.html).
+
+In short, this means you can fork this repository and do anything you'd like with it. If you distribute your changes, you must:
+
+ 1. Publish your changes under the same license. This ensures the software remains free.
+ 2. Use a name that's substantially different from "Whispers" and "100 Million Books" as well as a logo that is not similar to the one at the top of this document. This allows for competition without confusion.
+
+See [LICENSE](LICENSE) for complete details.
