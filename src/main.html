@@ -63,7 +63,7 @@
 						<p>That's generations of knowledge & wisdom—lost. Whispers helps you rediscover this massive store of wisdom.</p>
 						<p>Every few minutes, you'll get a small notification about a new book. It'll be quick and subtle—so you will probably miss it (that's by design...we don't want to distract you!)—but if you happen to catch one you like, hop to this window for a hand-picked snippet from the book.</p>
 						<p>This program is part of the <a href='https://100millionbooks.org/' target='_blank'>100 Million Books</a> project. Check out our <a href='https://100millionbooks.org/transparency/' target='_blank'>Transparency Report</a> to see more about the books we feature. You can read more about our mission <a href='https://medium.com/@100millionbooks/why-332a1c325299'>here</a>.</p>
-						<p class='note'>v0.5.0<br>Please note that this software is a beta release. If you encounter issues, please send email.</p>
+						<p class='note'>Please note that this software is a beta release—it's not perfect. If you encounter issues, please tell us!</p>
 					</div>
 					<div class="modal-footer">
 						<button class='btn btn-primary'>One More Thing <i class="fas fa-angle-right"></i></button>
@@ -320,7 +320,7 @@
     <script>
     
 		const { ipcRenderer, remote } = require( 'electron' );
-		let dotenv = "";
+		let host_address = "";
 		let interval_timer = null; let seconds = 0;
 		
 		ipcRenderer.send( 'get-next-book' );
@@ -345,7 +345,7 @@
 			}
 			
 			if( result.data.first_run ) {
-				dotenv = result.data.dotenv;
+				host_address = result.data.host_address;
 				setTimeout( function() {
 					$( '#about-project' ).modal( { backdrop: 'static', keyboard: false } );
 				}, 1500 );
@@ -538,7 +538,7 @@
 			let re = /\S+@\S+/;
 			if( ( user_email_input.length !== 0 ) && ( re.test( user_email_input ) ) ) {
 				
-				$.getJSON( dotenv + '?get_new_email_address=' + encodeURIComponent(user_email_input) + '&client=' + process.platform + '&callback=?' )
+				$.getJSON( host_address + '?get_new_email_address=' + encodeURIComponent(user_email_input) + '&client=' + process.platform + '&callback=?' )
 
 				.done( function( json ) {
 					

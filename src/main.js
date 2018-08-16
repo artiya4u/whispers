@@ -118,7 +118,7 @@ function pop_new_book( event ) {
 			let cb = {};
 			cb.book = data.books.shift();
             cb.timestamp = ( new Date().getTime() + data.app_defaults.whisper_interval );
-            cb.dotenv = process.env.DA_HOST;
+            cb.host_address = process.env.DA_HOST;
 			
 			launch_whisper( cb );
 			event.sender.send( 'get-book-response', { error: false, data: cb } );
@@ -205,7 +205,7 @@ function load_books( send_back, event, first_run, cid ) {
                         storage.set( 'current_book', cb, function() {
                         
                             cb.first_run = first_run;
-                            cb.dotenv = process.env.DA_HOST;
+                            cb.host_address = process.env.DA_HOST;
                         
                             launch_whisper( cb );
                             event.sender.send( 'get-book-response', { error: false, data: cb } );
@@ -508,7 +508,12 @@ mainMenuTemplate.push(
 			{
 				label: 'Facebook',
 				click() { mainWindow.webContents.send( 'open-dialog', 'facebook' ); }
-			}
+            },
+            { type: 'separator' },
+            {
+				label: 'v' + app.getVersion(),
+				enabled: false
+            }
 		]
 	}
 );
