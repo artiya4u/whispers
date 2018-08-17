@@ -10,7 +10,7 @@ To maximize the integrity of this environment of intellectual freedom, user priv
 
 ## What does this program do?
 
-Whispers is a desktop client for the 100 Million Books service. It offers discreet notifications of meaningful ideas from random books throughout the day. You'll probably miss most of them, which is intended (the program shouldn't be distracting), but the ones you do notice may open your mind to ideas & inspiration you wouldn't have seen anywhere else.
+Whispers is a desktop client for the 100 Million Books service. It offers discreet notifications of meaningful ideas from random books throughout the day. You'll probably miss most of them, which is intended (the goal is to blend in with your work, not distract you from it), but the ones you do notice may open your mind to ideas & inspiration you wouldn't have seen anywhere else.
 
 Here's an example of a notification:
 
@@ -18,7 +18,7 @@ Here's an example of a notification:
 
 Did you catch it? It appeared for a split second on the bottom right: greyscale, no graphics, and slightly translucent. Very easy to miss. If you prefer, you can configure the notification to show even more briefly.
 
-But if you do happen to catch the notification, and it sparks your interest, you can hop over to the program window to see more detail:
+But if you do happen to catch the notification, and if it sparks your interest, you can hop over to the program window to see more detail:
 
 <img src="https://100millionbooks.org/img/github/100mb-window-demo.gif" />
 

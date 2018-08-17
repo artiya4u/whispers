@@ -424,14 +424,14 @@ function launch_main_window() {
 shortcuts
 *****************/
 
-electronLocalshortcut.register( 'CommandOrControl+I', () => {
+/* electronLocalshortcut.register( 'CommandOrControl+I', () => {
     mainWindow.toggleDevTools();
     //return;
 });
 electronLocalshortcut.register( 'CommandOrControl+R', () => {
     mainWindow.reload();
     //return;
-});
+}); */
 
 
 /*****************
