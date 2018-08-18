@@ -421,6 +421,14 @@ p.section-lead {
     /*background-color: rgba(46, 204, 113,0.15);*/
 }
 
+#premium-note i {
+    cursor: pointer;
+}
+
+#premium-note p:nth-child(2) {
+	color: #bdc3c7;
+}
+
 #pronto-message {
 	font-style: italic;
 	font-size: 12px;
@@ -820,11 +828,16 @@ input[type=range]::-webkit-slider-runnable-track {
     padding-bottom: 10px;
 }
 
-#oc-box img, #rediscovery-box img, #social-box img, #update-available img {
+#oc-box img, #rediscovery-box img, #social-box img, #credits-box img, #update-available img {
     width: 65%;
     padding: 40px;
     padding-top: 25px;
     padding-bottom: 0;
+}
+
+#credits-box ul li {
+    font-size: 15px;
+    font-family: inherit;
 }
 
 #update-available img {

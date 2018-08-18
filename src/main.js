@@ -18,6 +18,10 @@ let mainMenuTemplate = [];
 app-wide configuration settings
 *****************/
 
+//called fake credits because they're not worth anything yet: 
+//just a dumb counter that keeps counting down and resetting.
+const initial_fake_credits = 300;
+
 const envPath = path.join( ( __dirname ).substring( 0, ( __dirname.length - 4 ) ), '/.env' );
 dotenv.config( { path: envPath } );
 
@@ -93,10 +97,12 @@ app.on( 'ready', function() {
 function set_defaults() {
     
     storage.set( 'app_defaults', {
-        whisper_interval: 1200000,      //this means 20 minutes
+        whisper_interval: 1200000,      //1200000 means 20 minutes
         whisper_duration: 1200,
         autostart: true
     });
+
+    storage.set( 'fake_credits', initial_fake_credits );
     
     autolauncher.enable();
     
@@ -111,19 +117,22 @@ book-related tasks
 //get a new whisper when the timer runs out; load books if necessary
 function pop_new_book( event ) {
 	
-	storage.getMany( [ 'books', 'app_defaults' ], function( error, data ) {
+	storage.getMany( [ 'books', 'app_defaults', 'fake_credits' ], function( error, data ) {
 		
 		if( data.books.length ) {
 			let cb = {};
 			cb.book = data.books.shift();
             cb.timestamp = ( new Date().getTime() + data.app_defaults.whisper_interval );
             cb.host_address = process.env.DA_HOST;
+            cb.credits_remaining = data.fake_credits;
 			
 			launch_whisper( cb );
 			event.sender.send( 'get-book-response', { error: false, data: cb } );
 			
 			//set current book
-			storage.set( 'current_book', cb );
+            storage.set( 'current_book', cb );
+            
+            decrement_credits( data.fake_credits );
 			
 			//set book array; load more if necesssary
 			storage.set( 'books', data.books, function() {
@@ -138,6 +147,12 @@ function pop_new_book( event ) {
     });
 	
 	return;
+}
+
+//decrement remaining credits; set back to initial value when depleted
+function decrement_credits( credits ) {
+    storage.set( 'fake_credits', ( ( credits - 1 ) < 0 ? initial_fake_credits : credits - 1 ) );
+    return;
 }
 
 //once we know we need to load more books, ensure defaults and client id are set before loading
@@ -188,7 +203,7 @@ function load_books( send_back, event, first_run, cid ) {
             try {
                 let ready_to_display = transform_data( JSON.parse( body.slice( 2, -1 ) ) );
                 
-                storage.getMany( [ 'books', 'app_defaults' ], function( error, data ) {
+                storage.getMany( [ 'books', 'app_defaults', 'fake_credits' ], function( error, data ) {
                     if( Array.isArray( data.books ) ) {
                         data.books = (data.books).concat( ready_to_display );
                     } else {
@@ -205,9 +220,12 @@ function load_books( send_back, event, first_run, cid ) {
                         
                             cb.first_run = first_run;
                             cb.host_address = process.env.DA_HOST;
+                            cb.credits_remaining = data.fake_credits;
                         
                             launch_whisper( cb );
                             event.sender.send( 'get-book-response', { error: false, data: cb } );
+                        
+                            decrement_credits( data.fake_credits );
                         });
                     } else {
                         storage.set( 'books', data.books );
