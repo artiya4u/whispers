@@ -97,7 +97,7 @@ app.on( 'ready', function() {
 function set_defaults() {
     
     storage.set( 'app_defaults', {
-        whisper_interval: 1200000,      //1200000 means 20 minutes
+        whisper_interval: 600000,      //600000 means 10 minutes
         whisper_duration: 1200,
         autostart: true
     });
