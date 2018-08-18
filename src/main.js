@@ -15,7 +15,7 @@ let mainMenuTemplate = [];
 
 
 /*****************
-crucial app-wide settings
+app-wide configuration settings
 *****************/
 
 const envPath = path.join( ( __dirname ).substring( 0, ( __dirname.length - 4 ) ), '/.env' );
@@ -85,7 +85,6 @@ ipcMain.on( 'toggle-autostart', ( event, arg ) => {
 app startup stuff
 *****************/
 
-//listen for app to be ready
 app.on( 'ready', function() { 
 	launch_main_window();
 	return;
@@ -94,7 +93,7 @@ app.on( 'ready', function() {
 function set_defaults() {
     
     storage.set( 'app_defaults', {
-        whisper_interval: 1200000,      //default is 20 minutes
+        whisper_interval: 1200000,      //this means 20 minutes
         whisper_duration: 1200,
         autostart: true
     });
@@ -141,7 +140,7 @@ function pop_new_book( event ) {
 	return;
 }
 
-//once we know we need to load more books, ensure defaults and client id are set.
+//once we know we need to load more books, ensure defaults and client id are set before loading
 function prepare_load_books( send_back, event ) {
 	
 	storage.get( 'first_run', function( error, fr ) {
@@ -155,7 +154,7 @@ function prepare_load_books( send_back, event ) {
 		
         storage.get( 'client_id', function( error, cid ) {
             
-            if( typeof cid === 'object' ) {     //will be string if already set
+            if( typeof cid !== 'string' ) {     //will be string if already set
                 let new_client_id = process.platform + randomstring.generate(54);
                 storage.set( 'client_id', new_client_id, function() {
                     load_books( send_back, event, first_run, new_client_id );
@@ -215,7 +214,7 @@ function load_books( send_back, event, first_run, cid ) {
                     }
                 });
             } catch(e) {
-                //don't do anything. will silently fail and try loading more books on the next 
+                //don't do anything. will silently fail and try loading more books on the next interval
             }
         }
     });
@@ -276,7 +275,7 @@ function transform_data( json ) {
 			json[o]['supersnip_text'] = ( json[o]['supersnip_text'] ).substring( 1, ( json[o]['supersnip_text'].length - 1 ) );
 			
 			if( json[o]['supersnip_text'] ===  "<p class='visual-quote'>If you're seeing this message, you're running an old version of the Chrome extension.<br><br>Please update!</p>" ) {
-				json[o]['supersnip_text'] = null;
+				json[o]['supersnip_text'] = null;      
 			}
 		}
 		
@@ -355,7 +354,7 @@ function launch_whisper( cb ) {
                 try {
                     whisper.close();
                 } catch(e) {
-                    //don't do anything...random and unnecessary
+                    //fail silently
                 }
             }, ad.whisper_duration );
         });
@@ -516,4 +515,4 @@ mainMenuTemplate.push(
             }
 		]
 	}
-);
+);don't do anything...

@@ -23,9 +23,7 @@
     
         <div id="loading-screen">
             <div style="margin-top: 16vh;text-align: center;">
-                <!--<i class="fas fa-cog fa-spin fa-3x"></i>-->
                 <img src="../img/icon.png">
-                <!--<h3><i class="fas fa-asterisk fa-spin"></i> Loading...<i class="fas fa-asterisk fa-spin"></i></h3>-->
                 <h3>Whispers (Beta)</h3>
                 <p>by 100 Million Books</p>
             </div>
@@ -81,12 +79,10 @@
 					</div>
 					<div class="modal-body">
 						<img src="../img/icon.png">
-						<p>100 Million Books (which maintains Whispers) is the most ambitious effort to make books <b>discoverable</b> through serendipity.</p>
+						<p>100 Million Books (which maintains Whispers) is an ambitious effort to make books <b>discoverable</b> through serendipity.</p>
 						<p>Subscribe for updates & to be among the first to know about new editions of our digital magazine <a href='https://100millionbooks.org/occasional-curiosity' target='_blank'><i>The Occasional Curiosity</i></a>!</p>
 						<p>We don't email more than twice a month.</p>
 						<input type='email' placeholder='your email'>
-						<!--<p>We publish a digital magazine called <a href='https://100millionbooks.org/occasional-curiosity' target='_blank'><i>The Occasional Curiosity</i></a> with the best snippets we find that we couldn't put here. It goes out twice a month...sign up to stay updated!</p>
-						<p>No good digital service can be 100% free forever (unless it steals & sells your data). While a basic version of this service will always be free, we may charge for features you want. Subscribers will always get first dibs & the best deals!</p>-->
 					</div>
 					<div class="modal-footer">
 						<button class='btn btn-default no-thanks'>No Thanks</button><button class='btn btn-primary send-email'>Submit <i class="fas fa-angle-right"></i></button>
@@ -107,27 +103,19 @@
                         
                         <div id='setting-whisper-interval' class='setting'>
                             <p>How often do you want to get Whispers?</p>
-                            
                             <div class='setting-readout'>every <span>20</span> minutes</div>
-                            
                             <input type="range" min="5" max="100" step="5" value="20">
-                            
                         </div>
                         
                         <div id='setting-whisper-duration' class='setting'>
                             <p>How long should Whisper notifications show?</p>
-                            
                             <div class='setting-readout'>for <span>1200</span> milliseconds</div>
-                            
                             <input type="range" min="1000" max="3000" step="100" value="1200">
-                            
                         </div>
                         
                         <div id='setting-autostart' class='setting'>
                             <p>Would you like Whispers to start when you log in?</p>
-                            
                             <input type="checkbox" checked=true data-toggle="toggle" data-on="Yes" data-off="No" data-width="80">
-                            
                         </div>
                         
 					</div>
@@ -149,7 +137,7 @@
 						<img src="../img/privacy-banner.png">
 						<p class='modal-box-header'>Privacy—freedom to wonder (and wander) away from prying eyes—this is why we exist.</p>
 						<p>This program doesn't track what you do on it. We don't try to learn what books you might like, so that we can send you 'smart' suggestions, or so that we can sell that data to a make a few extra bucks. We serve <span class='note'>random</span> snippets, and what you think of those snippets is <span class='note'>your</span> business.</p>
-                        <p>We'll soon be making the code of this program open-source, so you can verify our privacy claims for yourself!</p>
+                        <p><a href='https://github.com/100millionbooks/whispers' target='_blank'>This program is open-source</a>, so you can verify our privacy claims for yourself. We're working toward making the whole service more open and transparent, and putting Whispers code on GitHub is just the first step. Soon, more code will be made open-source, as well as all book data!</p>
                         <p>See our full privacy policy <a href='https://100millionbooks.org/privacy' target='_blank'>on our website</a>.</p>
 					</div>
 					<div class="modal-footer">
@@ -247,55 +235,11 @@
 			</div>
 	    </div>
         
-        
-        <!--<div class="modal fade" id="history-list" tabindex="-1" role="dialog">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">History</h4>
-              </div>
-              <div class="modal-body">
-                <p class="note favorites">Past 20 swipes shown, most recent first.</p>
-                <div class='brief-list'>
-                    
-                </div>
-              </div>
-              
-            </div>
-          </div>
-        </div>
-        
-        <div class="modal fade" id="faves-list" tabindex="-1" role="dialog">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Favorites</h4>
-              </div>
-              <div class="modal-body">
-                <p class="note favorites">Your favorite swipes. Cloud backups & tagging coming soon for Pronto members.</p>
-                <div class='brief-list'>
-                    
-                </div>
-              </div>
-              
-            </div>
-          </div>
-        </div>-->
-        
         <div id='swipe' class=''>
-            <!--<a href='#' id='show-favorites' data-toggle="tooltip" data-placement="right" title="See your saved swipes."><i class="fa fa-star" aria-hidden="true"></i></a>
-            <a href='#' id='show-history' data-toggle="tooltip" data-placement="right" title='See past 20 swipes.'><i class="fa fa-history" aria-hidden="true"></i></a>
-            <a href='#' id='send-suggestion' data-toggle="tooltip" data-placement="right" title='Send your favorite swipe!'><i class="fa fa-lightbulb-o" aria-hidden="true"></i></a>
-            <a href='#' id='edit-settings' data-toggle="tooltip" data-placement="right" title='Edit Settings.'><i class="fa fa-cog" aria-hidden="true"></i></a>-->
             <a href='#' id='about-button' data-toggle="tooltip" data-placement="right" title='About Whispers'><i class="fa fa-info-circle" aria-hidden="true"></i></a>
             <a href='#' id='settings-button' data-toggle="tooltip" data-placement="right" title='Settings'><i class="fa fa-cog" aria-hidden="true"></i></a>
-            <div class='swipe-container no-show-scroll'>
-                
-            </div>
+			<div class='swipe-container no-show-scroll'></div>
             <div id='fond-actions'>
-                <!--<a href='#' class='btn btn-primary' id='save-swipe'><i class="fa fa-star" aria-hidden="true"></i> Save</a>-->
 				<p>Like this snippet? Share with this link:</p>
                 <input type='text' value=''>
             </div>
@@ -303,7 +247,7 @@
         
         <div id='info' class=''>
 			<div id='premium-note'>
-                <p><span>Next whisper in <span id='time-left'>19:59</span><!--</span><br> <span id="pronto-message">Custom time intervals (and other settings) coming soon.</span></p>-->
+                <p><span>Next whisper in <span id='time-left'>19:59</span>
             </div>
 			<div id='book-basics'>
 				<div class='cover-image' style="background-image:url('https://s3.amazonaws.com/allthebooks/covers/bp08c5tF72fSPfgH3.jpg')"></div>
@@ -445,7 +389,7 @@
 			$( '#book-basics .year' ).text( book.year );
 			
 			$( '#swipe .swipe-container' ).html( book.supersnip_text );
-			$( '#swipe .swipe-container .visual-quote' ).append( '<i class="fas fa-quote-left watermark"></i>' );	//<i class="fas fa-quote-right watermark"></i>
+			$( '#swipe .swipe-container .visual-quote' ).append( '<i class="fas fa-quote-left watermark"></i>' );
 			
 			//remove all appended items before adding new ones
 			$( "#swipe-notes, #swipe-tags, #suggestion-credit, #book-links" ).remove();
@@ -483,7 +427,7 @@
 			}
 			
 			//book links
-			if( book.bkwty_url ) {
+			if( book.asin || book.isbn10 ) {
 			
 				let links_html = "";
 		
@@ -501,20 +445,17 @@
 			//share link
 			$( '#fond-actions input' ).attr( 'value', "https://100millionbooks.org/snippet?uid=" + book.uid );
 			
-			
 			return;
 		}
 		
-		function getDomain(url, subdomain) {
+		//people who suggest books can include a link to their social profiles. this function gets
+		//the root of that domain in order to show the favicon in the interface.
+		function getDomain(url) {
 			subdomain = subdomain || false;
 
 			url = url.replace(/(https?:\/\/)?(www.)?/i, '');
-
-			if (!subdomain) {
-				url = url.split('.');
-
-				url = url.slice(url.length - 2).join('.');
-			}
+			url = url.split('.');
+			url = url.slice(url.length - 2).join('.');
 
 			if (url.indexOf('/') !== -1) {
 				return url.split('/')[0];
@@ -564,7 +505,6 @@
 			}
 			
 			return;
-		
 		}
 
 
