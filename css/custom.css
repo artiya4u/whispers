@@ -811,10 +811,14 @@ input[type=range]::-webkit-slider-runnable-track {
 	transition: all 0.3s;
 }
 
-#about-project img, #stay-in-touch img {
+#about-project img, #stay-in-touch img, #credits-box img {
 	margin: 25px auto;
     display: block;
     width: 100px;
+}
+
+#credits-box img {
+	width: 150px;
 }
 
 #stay-in-touch img {
@@ -828,7 +832,7 @@ input[type=range]::-webkit-slider-runnable-track {
     padding-bottom: 10px;
 }
 
-#oc-box img, #rediscovery-box img, #social-box img, #credits-box img, #update-available img {
+#oc-box img, #rediscovery-box img, #social-box img, #update-available img {
     width: 65%;
     padding: 40px;
     padding-top: 25px;

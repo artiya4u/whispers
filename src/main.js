@@ -20,7 +20,7 @@ app-wide configuration settings
 
 //called fake credits because they're not worth anything yet: 
 //just a dumb counter that keeps counting down and resetting.
-const initial_fake_credits = 300;
+const initial_fake_credits = 110;
 
 const envPath = path.join( ( __dirname ).substring( 0, ( __dirname.length - 4 ) ), '/.env' );
 dotenv.config( { path: envPath } );
