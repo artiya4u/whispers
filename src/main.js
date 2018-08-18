@@ -515,4 +515,4 @@ mainMenuTemplate.push(
             }
 		]
 	}
-);don't do anything...
+);

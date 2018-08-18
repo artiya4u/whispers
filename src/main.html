@@ -58,7 +58,7 @@
 					<div class="modal-body">
 						<img src="../img/whisper_icon.png">
 						<p class='modal-box-header'>Humans have published over 100,000,000 books but most of us never discover 99.9999% of them.</p>
-						<p>That's generations of knowledge & wisdom—lost. Whispers helps you rediscover this massive store of wisdom.</p>
+						<p>That's generations of knowledge & wisdom—lost. Whispers helps you rediscover this massive treasure.</p>
 						<p>Every few minutes, you'll get a subtle notification about a new book. We purposely made notifications easy to miss because we don't want them to be distracting. But if you happen to catch one you like, hop to this window for a hand-picked snippet from the book.</p>
 						<p>This program is part of the <a href='https://100millionbooks.org/' target='_blank'>100 Million Books</a> project. Check out our <a href='https://100millionbooks.org/transparency/' target='_blank'>Transparency Report</a> to see more about the books we feature. You can read more about our mission <a href='https://medium.com/@100millionbooks/why-332a1c325299'>here</a>.</p>
 						<p class='note'>Please note that this software is a beta release—it's not perfect. If you encounter issues, please tell us!</p>
@@ -79,7 +79,7 @@
 					</div>
 					<div class="modal-body">
 						<img src="../img/icon.png">
-						<p>100 Million Books (which maintains Whispers) is an ambitious effort to make books <b>discoverable</b> through serendipity.</p>
+						<p>100 Million Books is an ambitious effort to make books & ideas discoverable through serendipity—no algorithms or 'smart' recommendations of any kind.</p>
 						<p>Subscribe for updates & to be among the first to know about new editions of our digital magazine <a href='https://100millionbooks.org/occasional-curiosity' target='_blank'><i>The Occasional Curiosity</i></a>!</p>
 						<p>We don't email more than twice a month.</p>
 						<input type='email' placeholder='your email'>
@@ -432,11 +432,11 @@
 				let links_html = "";
 		
 				if( book.asin ) {
-					links_html += "<span class='tag'><a href='https://www.goodreads.com/book/isbn/" + book.asin + "'><i class='fas fa-external-link-alt'></i> Goodreads</a></span>";
-					links_html += "<span class='tag'><a href='https://www.amazon.com/dp/" + book.asin + "'><i class='fas fa-external-link-alt'></i> Amazon</a></span>";
+					links_html += "<span class='tag'><a class='gr " + book._id + "' href='https://www.goodreads.com/book/isbn/" + book.asin + "'><i class='fas fa-external-link-alt'></i> Goodreads</a></span>";
+					links_html += "<span class='tag'><a class='amz " + book._id + "' href='https://www.amazon.com/dp/" + book.asin + "'><i class='fas fa-external-link-alt'></i> Amazon</a></span>";
 				}
 				if( book.isbn10 ) {
-					links_html += "<span class='tag'><a href='https://www.librarything.com/isbn/" + book.isbn10 + "'><i class='fas fa-external-link-alt'></i> LibraryThing</a></span>";
+					links_html += "<span class='tag'><a class='lt " + book._id + "' href='https://www.librarything.com/isbn/" + book.isbn10 + "'><i class='fas fa-external-link-alt'></i> LibraryThing</a></span>";
 				}
 				
 				$( '#info' ).append( "<div id='book-links'><p class='section-lead'>See More</p><p>" + links_html + "</p></div>" );
@@ -639,6 +639,13 @@
 			$( document ).on( 'click', 'a[href^="http"]', function( event ) {
 				event.preventDefault();
 				remote.require('electron').shell.openExternal( this.href );
+
+				//count click if it's to get more information about a book
+				const dest = this.classList[0]; const book_id = this.classList[1];
+				const destinations_to_record = [ 'gr', 'amz', 'lt' ];
+				if( destinations_to_record.includes(dest) ) {
+					$.getJSON( host_address + "?bo=" + book_id + "&cl=" + dest + "&callback=?" );
+				}
 			});
         });
         
