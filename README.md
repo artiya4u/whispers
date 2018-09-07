@@ -51,12 +51,6 @@ In any case, this works:
 3. Make sure build settings in `package.json` are to your liking.
 4. Run `yarn dist`. You'll find what you want in `/dist`.
 
-## Note to Code Snobs
-
-Yes, this program is built with jQuery.
-
-For now, I'm taking a pragmatic stance and focusing on features and growth. I may migrate to React at some point, when complexity demands it, but for now, it works just fine.
-
 ## License
 
 Whispers is [free software](https://www.gnu.org/philosophy/free-sw.html), licensed under Version 3 of the [GNU Affero General Public License](https://gnu.org/licenses/agpl.html).
