@@ -20,7 +20,10 @@
     "build": {
         "appId": "com.electron.100millionbooks.whispers",
         "linux": {
-            "target": ["AppImage", "deb"],
+            "target": [
+                "AppImage",
+                "deb"
+            ],
             "maintainer": "Steve Jain",
             "vendor": "Canon of Man LLC",
             "category": "Education"
