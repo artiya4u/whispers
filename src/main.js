@@ -18,10 +18,6 @@ let mainMenuTemplate = [];
 app-wide configuration settings
 *****************/
 
-//called fake credits because they're not worth anything yet: 
-//just a dumb counter that keeps counting down and resetting.
-const initialFakeCredits = 110;
-
 const envPath = path.join( ( __dirname ).substring( 0, ( __dirname.length - 4 ) ), '/.env' );
 dotenv.config( { path: envPath } );
 
@@ -55,7 +51,7 @@ interwindow communication
 ipcMain.on( 'get-next-book', ( event, arg ) => {  
 	
 	//check books
-	storage.get( 'currentBook', function( error, cb ) {
+	storage.get( 'current_book', function( error, cb ) {
 		if( ( Object.keys( cb ) ).length ) {
 			if( cb.timestamp > ( new Date().getTime() ) ) {
 				launchWhisper( cb );
@@ -96,13 +92,11 @@ app.on( 'ready', function() {
 
 function setDefaults() {
     
-    storage.set( 'appDefaults', {
-        whisperInterval: 600000,      //600000 means 10 minutes
-        whisperDuration: 1200,
+    storage.set( 'app_defaults', {
+        whisper_interval: 600000,      //600000 means 10 minutes
+        whisper_duration: 1200,
         autostart: true
     });
-
-    storage.set( 'fakeCredits', initialFakeCredits );
     
     autolauncher.enable();
     
@@ -117,22 +111,19 @@ book-related tasks
 //get a new whisper when the timer runs out; load books if necessary
 function popNewBook( event ) {
 	
-	storage.getMany( [ 'books', 'appDefaults', 'fakeCredits' ], function( error, data ) {
+	storage.getMany( [ 'books', 'app_defaults' ], function( error, data ) {
 		
 		if( data.books.length ) {
 			let cb = {};
 			cb.book = data.books.shift();
-            cb.timestamp = ( new Date().getTime() + data.appDefaults.whisperInterval );
-            cb.hostAddress = process.env.DA_HOST;
-            cb.creditsRemaining = data.fakeCredits;
+            cb.timestamp = ( new Date().getTime() + data.app_defaults.whisper_interval );
+            cb.host_address = process.env.DA_HOST;
 			
 			launchWhisper( cb );
 			event.sender.send( 'get-book-response', { error: false, data: cb } );
 			
 			//set current book
-            storage.set( 'currentBook', cb );
-            
-            decrementCredits( data.fakeCredits );
+            storage.set( 'current_book', cb );
 			
 			//set book array; load more if necesssary
 			storage.set( 'books', data.books, function() {
@@ -149,29 +140,23 @@ function popNewBook( event ) {
 	return;
 }
 
-//decrement remaining credits; set back to initial value when depleted
-function decrementCredits( credits ) {
-    storage.set( 'fakeCredits', ( ( credits - 1 ) < 0 ? initialFakeCredits : credits - 1 ) );
-    return;
-}
-
 //once we know we need to load more books, ensure defaults and client id are set before loading
 function prepareLoadBooks( sendBack, event ) {
 	
-	storage.get( 'firstRun', function( error, fr ) {
+	storage.get( 'first_run', function( error, fr ) {
 		
 		let firstRun = false;
 		if( fr ) {	//unset value is {} (e.g., first run)
 			firstRun = true;
             setDefaults();
-			storage.set( 'firstRun', false );
+			storage.set( 'first_run', false );
 		}
 		
-        storage.get( 'clientID', function( error, cid ) {
+        storage.get( 'client_id', function( error, cid ) {
             
             if( typeof cid !== 'string' ) {     //will be string if already set
                 let newClientID = process.platform + randomstring.generate(54);
-                storage.set( 'clientID', newClientID, function() {
+                storage.set( 'client_id', newClientID, function() {
                     loadBooks( sendBack, event, firstRun, newClientID );
                 });
             } else {
@@ -190,10 +175,10 @@ function loadBooks( sendBack, event, firstRun, cid ) {
                 
                 if( Array.isArray( allBooks ) ) {
                     if( allBooks.length === 0 ) {
-                        event.sender.send( 'get-book-response', { error: true, data: { firstRun: firstRun } } );
+                        event.sender.send( 'get-book-response', { error: true, data: { first_run: firstRun } } );
                     }
                 } else if( ( Object.keys( allBooks ) ).length === 0 ) {
-                    event.sender.send( 'get-book-response', { error: true, data: { firstRun: firstRun } } );
+                    event.sender.send( 'get-book-response', { error: true, data: { first_run: firstRun } } );
                 }
             })
             
@@ -203,7 +188,7 @@ function loadBooks( sendBack, event, firstRun, cid ) {
             try {
                 let readyToDisplay = transformData( JSON.parse( body.slice( 2, -1 ) ) );
                 
-                storage.getMany( [ 'books', 'appDefaults', 'fakeCredits' ], function( error, data ) {
+                storage.getMany( [ 'books', 'app_defaults' ], function( error, data ) {
                     if( Array.isArray( data.books ) ) {
                         data.books = (data.books).concat( readyToDisplay );
                     } else {
@@ -213,19 +198,17 @@ function loadBooks( sendBack, event, firstRun, cid ) {
                     if( sendBack ) {
                         let cb = {};
                         cb.book = (data.books).shift();
-                        cb.timestamp = ( new Date().getTime() + data.appDefaults.whisperInterval  );
+                        cb.timestamp = ( new Date().getTime() + data.app_defaults.whisper_interval  );
                         
                         storage.set( 'books', data.books );
-                        storage.set( 'currentBook', cb, function() {
+                        storage.set( 'current_book', cb, function() {
                         
-                            cb.firstRun = firstRun;
-                            cb.hostAddress = process.env.DA_HOST;
-                            cb.creditsRemaining = data.fakeCredits;
+                            cb.first_run = firstRun;
+                            cb.host_address = process.env.DA_HOST;
                         
                             launchWhisper( cb );
                             event.sender.send( 'get-book-response', { error: false, data: cb } );
-                        
-                            decrementCredits( data.fakeCredits );
+
                         });
                     } else {
                         storage.set( 'books', data.books );
@@ -262,7 +245,7 @@ function loadBooks( sendBack, event, firstRun, cid ) {
                             break;
                     }
                     
-                    mainWindow.webContents.send( 'new-update-available', { downloadLink: link, updateDetails: body['body'] } );
+                    mainWindow.webContents.send( 'new-update-available', { download_link: link, update_details: body['body'] } );
                 }
             }
         }
@@ -365,14 +348,14 @@ function launchWhisper( cb ) {
     });
 
     whisper.on( 'show', function( w ) {
-        storage.get( 'appDefaults', function( error, ad ) {
+        storage.get( 'app_defaults', function( error, ad ) {
             setTimeout( function() {
                 try {
                     whisper.close();
                 } catch(e) {
                     //fail silently
                 }
-            }, ad.whisperDuration );
+            }, ad.whisper_duration );
         });
         
         return;
@@ -439,14 +422,14 @@ function launchMainWindow() {
 shortcuts - these are for debugging only
 *****************/
 
-/* electronLocalshortcut.register( 'CommandOrControl+I', () => {
+electronLocalshortcut.register( 'CommandOrControl+I', () => {
     mainWindow.toggleDevTools();
     //return;
 });
 electronLocalshortcut.register( 'CommandOrControl+R', () => {
     mainWindow.reload();
     //return;
-}); */
+});
 
 
 /*****************

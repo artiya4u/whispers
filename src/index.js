@@ -17,14 +17,14 @@ ipcRenderer.on( 'get-book-response', ( event, result ) => {
         $( '#book-loading-screen' ).fadeIn();
         
     } else {
-        modTheDom( result.data.book, result.data.creditsRemaining );
+        modTheDom( result.data.book );
         startTimer( result.data.timestamp );
         $( '#book-loading-screen' ).fadeOut();
         $( '#failed-come-again' ).fadeOut();
     }
     
-    if( result.data.firstRun ) {
-        hostAddress = result.data.hostAddress;
+    if( result.data.first_run ) {
+        hostAddress = result.data.host_address;
         setTimeout( function() {
             $( '#about-project' ).modal( { backdrop: 'static', keyboard: false } );
         }, 1500 );
@@ -116,7 +116,7 @@ function startTimer( switchTime ) {
 }
 
 //put book data in place
-function modTheDom( book, creditsRemaining ) {
+function modTheDom( book ) {
     
     $( '#book-basics .cover-image' ).attr( 'style', "background-image:url(" + book.cover_picture + ")" );
     $( '#book-basics .title' ).text( book.title );
@@ -180,9 +180,6 @@ function modTheDom( book, creditsRemaining ) {
     //share link
     $( '#fond-actions input' ).attr( 'value', "https://100millionbooks.org/snippet?uid=" + book.uid );
 
-    //update credits remaining (for now, it's fake)
-    $( '#credits-left' ).text( creditsRemaining );
-    
     return;
 }
 
@@ -253,12 +250,12 @@ function openSettings() {
 
     $( '#app-settings' ).modal( 'show' );
         
-    remote.require('electron-json-storage').get( 'appDefaults', function( error, ad ) {
-        $('#setting-whisper-interval input').val( ad.whisperInterval / 60000 );
-        $('#setting-whisper-duration input').val( ad.whisperDuration );
+    remote.require('electron-json-storage').get( 'app_defaults', function( error, ad ) {
+        $('#setting-whisper-interval input').val( ad.whisper_interval / 60000 );
+        $('#setting-whisper-duration input').val( ad.whisper_duration );
         
-        $( '#setting-whisper-interval .setting-readout span' ).text( ad.whisperInterval / 60000 )
-        $( '#setting-whisper-duration .setting-readout span' ).text( ad.whisperDuration );
+        $( '#setting-whisper-interval .setting-readout span' ).text( ad.whisper_interval / 60000 )
+        $( '#setting-whisper-duration .setting-readout span' ).text( ad.whisper_duration );
         
         if( ad.autostart ) {
             $( '#setting-autostart input' ).bootstrapToggle( 'on' );
@@ -274,9 +271,9 @@ function setSettings() {
     
     const autostart = $( '#setting-autostart input' ).prop('checked');
     
-    remote.require('electron-json-storage').set( 'appDefaults', {
-        whisperInterval: ( $( '#setting-whisper-interval input' ).val() ) * 60000,
-        whisperDuration: $( '#setting-whisper-duration input' ).val(),
+    remote.require('electron-json-storage').set( 'app_defaults', {
+        whisper_interval: ( $( '#setting-whisper-interval input' ).val() ) * 60000,
+        whisper_duration: $( '#setting-whisper-duration input' ).val(),
         autostart: autostart
     });
     
@@ -332,11 +329,7 @@ $( document ).ready( function() {
     $( 'button.settings-done' ).on( 'click', function() {
         $( '#app-settings' ).modal( 'hide' );
     });
-    
-    //show credits modal
-    $( '#premium-note i' ).on( 'click', function() {
-        $( '#credits-box' ).modal( 'show' );
-    });
+
 
     /*****************
     handle changes in settings...code in this section needs to be refactored.
