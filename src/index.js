@@ -1,6 +1,6 @@
 const { ipcRenderer, remote } = require( 'electron' );
 let hostAddress = "";
-let intervalTimer = null; let seconds = 0;
+let intervalTimer = null;
 
 ipcRenderer.send( 'get-next-book' );
 
@@ -23,8 +23,10 @@ ipcRenderer.on( 'get-book-response', ( event, result ) => {
         $( '#failed-come-again' ).fadeOut();
     }
     
+    //set host address every time, in case it's changed in the interim
+    hostAddress = result.data.host_address;
+
     if( result.data.first_run ) {
-        hostAddress = result.data.host_address;
         setTimeout( function() {
             $( '#about-project' ).modal( { backdrop: 'static', keyboard: false } );
         }, 1500 );
@@ -215,7 +217,7 @@ function saveEmail() {
         
         $.getJSON( hostAddress + '?get_new_email_address=' + encodeURIComponent(userEmailInput) + '&client=' + process.platform + '&callback=?' )
 
-        .done( function( json ) {
+        .done( function() {
             
             $( "#stay-in-touch .modal-footer i.get-email-status" ).hide();
             $( "#stay-in-touch .modal-footer i.get-email-status.success" ).fadeIn();
@@ -227,7 +229,7 @@ function saveEmail() {
             }, 1200 );
         })
         
-        .fail( function( jqxhr, textStatus, error ) {
+        .fail( function() {
             $( "#stay-in-touch .modal-footer i.get-email-status" ).hide();
             $( "#stay-in-touch .modal-footer i.get-email-status.fail" ).fadeIn();
         });

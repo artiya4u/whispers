@@ -257,10 +257,10 @@ function loadBooks( sendBack, event, firstRun, cid ) {
 function getDownloadLink( arr, target ) {
     
 	let link = "https://100millionbooks.org";
-    const file_type = ( target === 'darwin' ) ? 'application/x-apple-diskimage' : 'application/x-ms-dos-executable';
+    const fileType = ( target === 'darwin' ) ? 'application/x-apple-diskimage' : 'application/x-ms-dos-executable';
     
-    arr.forEach(function(e) {
-        if( e.content_type === file_type ) {
+    arr.forEach( function(e) {
+        if( e.content_type === fileType ) {
             link = e.browser_download_url;
         }
     });
@@ -422,14 +422,14 @@ function launchMainWindow() {
 shortcuts - these are for debugging only
 *****************/
 
-electronLocalshortcut.register( 'CommandOrControl+I', () => {
+/* electronLocalshortcut.register( 'CommandOrControl+I', () => {
     mainWindow.toggleDevTools();
     //return;
 });
 electronLocalshortcut.register( 'CommandOrControl+R', () => {
     mainWindow.reload();
     //return;
-});
+}); */
 
 
 /*****************
