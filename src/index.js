@@ -1,6 +1,7 @@
 const { ipcRenderer, remote } = require( 'electron' );
 let hostAddress = "";
 let intervalTimer = null;
+let switchTime = 0;
 
 ipcRenderer.send( 'get-next-book' );
 
@@ -17,8 +18,9 @@ ipcRenderer.on( 'get-book-response', ( event, result ) => {
         $( '#book-loading-screen' ).fadeIn();
         
     } else {
+        switchTime = result.data.timestamp;
         modTheDom( result.data.book );
-        startTimer( result.data.timestamp );
+        startTimer();
         $( '#book-loading-screen' ).fadeOut();
         $( '#failed-come-again' ).fadeOut();
     }
@@ -70,6 +72,15 @@ ipcRenderer.on( 'new-update-available', ( event, data ) => {
     $( '#update-available' ).modal( { backdrop: 'static', keyboard: false } );
 });
 
+ipcRenderer.on( 'pause-resume', ( event, item ) => {
+    
+    if( item.checked ) {
+        clearInterval( intervalTimer );
+    } else {
+        startTimer();
+    }
+});
+
 
 /*****************
 book-specific functions
@@ -86,7 +97,7 @@ function requestBooks() {
     return;
 }
 
-function startTimer( switchTime ) {
+function startTimer() {
     
     //set the end time
     setTimeout( function() {

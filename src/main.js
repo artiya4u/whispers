@@ -8,7 +8,7 @@ const randomstring = require('randomstring');
 const dotenv = require('dotenv');
 const AutoLaunch = require('auto-launch');
 
-const { app, BrowserWindow, Menu, ipcMain, dialog } = electron;
+const { app, BrowserWindow, Menu, Tray, ipcMain, dialog } = electron;
 
 let mainWindow;
 let mainMenuTemplate = []; 
@@ -86,7 +86,8 @@ app startup items
 *****************/
 
 app.on( 'ready', function() { 
-	launchMainWindow();
+    launchMainWindow();
+    setTrayIcon();
 	return;
 });
 
@@ -100,6 +101,46 @@ function setDefaults() {
     
     autolauncher.enable();
     
+    return;
+}
+
+function setTrayIcon() {
+    
+    const trayIconPic = path.join( __dirname, '../img/icon.png' );
+    const tray = new Tray( trayIconPic );
+    const contextMenu = Menu.buildFromTemplate([
+        { 
+            label: 'Show Window',
+            click() { mainWindow.show(); } 
+        },
+        { 
+            label: 'Pause Whispers', 
+            type: 'checkbox',
+            click: function( item ) {
+                mainWindow.webContents.send( 'pause-resume', item ); 
+            }
+        },
+        { 
+            type: 'separator' 
+        },
+        { 
+            role: 'quit' 
+        }
+    ]);
+
+    tray.setToolTip( 'Whispers' );
+    tray.setContextMenu(contextMenu);
+
+    tray.on( 'click', () => {
+        if( ( process.platform === 'linux' ) || ( process.platform === 'win32' ) ) {
+            mainWindow.isVisible() ? mainWindow.minimize() : mainWindow.show();
+        }
+    });
+
+    tray.on( 'double-click', () => {
+        mainWindow.isVisible() ? mainWindow.minimize() : mainWindow.show();
+    });
+
     return;
 }
 
@@ -326,6 +367,7 @@ function launchWhisper( cb ) {
         icon: iconPic,
         backgroundColor: '#444',
         opacity: 0.8,
+        skipTaskbar: true,
 		fullscreenable: false,
 		focusable: false,
         thickFrame: false,          //only for windows
@@ -387,6 +429,8 @@ function launchMainWindow() {
         width: ( ( width > 1600 ) ? 1600 : width ),
         backgroundThrottling: false,
         icon: iconPic,
+        skipTaskbar: true,
+        minimizable: true,
 		show: false
     });
     
@@ -398,8 +442,8 @@ function launchMainWindow() {
     }));
 	
 	mainWindow.on( 'ready-to-show', function( w ) {
-		mainWindow.maximize();
-        mainWindow.show();
+		//mainWindow.maximize();
+        //mainWindow.show();
 	});
     
     //quit app when closed listener
@@ -422,14 +466,14 @@ function launchMainWindow() {
 shortcuts - these are for debugging only
 *****************/
 
-/* electronLocalshortcut.register( 'CommandOrControl+I', () => {
+electronLocalshortcut.register( 'CommandOrControl+I', () => {
     mainWindow.toggleDevTools();
     //return;
 });
 electronLocalshortcut.register( 'CommandOrControl+R', () => {
     mainWindow.reload();
     //return;
-}); */
+});
 
 
 /*****************
